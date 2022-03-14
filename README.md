@@ -15,12 +15,19 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
 
 # TODO
-- search for sets
-- ‘Reveal’ button -> flips cards
-- Save probability in storage
+must have
 - gray out 'generate pack' if probabilities are invalid
+- search for sets
+- ‘Reveal’ button -> card flip animation
+- Save probability in storage
+
+nice to have
 - Pack value from tcg price
 - history of rares opened
-- Total spent from rolls
-- Set pack cost 
+- find a site with pull rates
 - One reverse holo per pack
+- Set pack cost 
+- Total spent from rolls
+
+# Features
+- used static site generation to pre-render 140 pages

@@ -5,7 +5,7 @@ export default function Sets(props) {
     const [cards, setCards] = useState(() => props.cards)
     const [rareTypes, setRareTypes] = useState(null)
     const [pack, setPack] = useState(null)
-    const [totalRarityProb, setTotalRarityProb] = useState(0)
+    const [totalRarityOutcomes, setTotalRarityOutcomes] = useState(0)
     const [totalRolls, setTotalRolls] = useState(0)
     
     const formRef = useRef()
@@ -14,14 +14,14 @@ export default function Sets(props) {
 
     const rareTypesList = rareTypes === null ? null : Object.keys(rareTypes)
     let t0 = null
-
+    
     function handleGeneratePack() {
         // for benchmarking
         t0 = performance.now()
-
+        
         // Get rare probabilities from user input
-        const rarityInputElements = formRef.current.elements
         const userRareVals = {}
+        const rarityInputElements = formRef.current.elements
         for (const e of rarityInputElements) {
             userRareVals[e.id] = parseInt(e.value, 10)
         }
@@ -57,7 +57,7 @@ export default function Sets(props) {
         for (const e of rarityInputElements) {
             totalFavorableValue += parseInt(e.value, 10)
         }
-        setTotalRarityProb(totalFavorableValue)
+        setTotalRarityOutcomes(totalFavorableValue)
     }
 
     return (
@@ -72,7 +72,7 @@ export default function Sets(props) {
                     )
                 })}
             </form>
-            points left: {100 - totalRarityProb}
+            points left: {100 - totalRarityOutcomes}
             <br></br>
             packs opened: {totalRolls}
             <br></br>
@@ -173,10 +173,10 @@ function getRareTypeforPack(userRareVals) {
     const roulette = new Array(100)
     let i = 0
 
-    for (const [rarityType, favorableOutcome] of Object.entries(userRareVals)) {
+    for (const [rarityType, favorableOutcomes] of Object.entries(userRareVals)) {
         let start = i
 
-        while (i < start + favorableOutcome) {
+        while (i < start + favorableOutcomes) {
             roulette[i] = rarityType
             i++
         }
