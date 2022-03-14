@@ -13,46 +13,36 @@ export default function Sets(props) {
     const { setid } = router.query
 
     const rareTypesList = rareTypes === null ? null : Object.keys(rareTypes)
+    let t0 = null
 
     function handleGeneratePack() {
+        // for benchmarking
+        t0 = performance.now()
+
+        // Get rare probabilities from user input
         const rarityInputElements = formRef.current.elements
         const userRareVals = {}
         for (const e of rarityInputElements) {
             userRareVals[e.id] = parseInt(e.value, 10)
         }
 
+        // temporary error handling for invalid probability
         const outcomesList = Object.values(userRareVals)
         const total = outcomesList.reduce((pv, cv) => pv + cv)
         if (total !== 100)
             throw 'rarity values must total 100'
 
         setTotalRolls(totalRolls + 1)
-        const commonsFromPack = []
-        const uncommonsFromPack = []
-        const raresFromPack = []
         let pack = []
-
     
-        for (const c of cards) {
-            const cardRarity = c.rarity.toLowerCase()
-    
-            switch (cardRarity) {
-                case 'common':
-                    commonsFromPack.push(c)
-                    break
-                case 'uncommon':
-                    uncommonsFromPack.push(c)
-                    break
-                default:
-                    raresFromPack.push(c)
-            }
-        }
-    
-        pack.push(...pickNonRareCards('common', commonsFromPack))
-        pack.push(...pickNonRareCards('uncommon', uncommonsFromPack))
-        pack.push(pickRareCard(raresFromPack, userRareVals))
-    
+        pack.push(...pickNonRareCards('common', cards))
+        pack.push(...pickNonRareCards('uncommon', cards))
+        pack.push(pickRareCard(cards, userRareVals))
         setPack(pack)
+
+        // for benchmarking
+        const t1 = performance.now();
+        console.log(`Call to handleGeneratePack took ${t1 - t0} milliseconds.`);
     }
 
     useEffect(() => {
@@ -60,7 +50,6 @@ export default function Sets(props) {
             setRareTypes(getRarityList(cards))
         }
     }, [cards])
-
     
     const handleChange = () => {
         const totalFavorableValue = 0
@@ -76,7 +65,7 @@ export default function Sets(props) {
             <form ref={formRef}>
                 {rareTypes && rareTypesList.map(rarity => {
                     return (
-                        <div>
+                        <div key={rarity}>
                             <label htmlFor={rarity}>{rarity} </label>
                             <input type='text' id={rarity} onChange={handleChange} defaultValue={0}></input>
                         </div>
@@ -134,24 +123,26 @@ function getRarityList(cards) {
 function pickNonRareCards(rarity, cards, userRareVals = {}) {
     let picks = []
     let total = null
-    let currRareType = null
+    let cardPool = []
 
     // how many cards to add
     switch (rarity) {
         case 'common':
             total = 7
+            cardPool = cards.filter(c => c.rarity.toLowerCase() === 'common')
             break
         case 'uncommon':
             total = 3
+            cardPool = cards.filter(c => c.rarity.toLowerCase() === 'uncommon')
             break
     }
 
     for (let i = 0; i < total; i++) {
-        let randIndex = Math.floor(Math.random() * cards.length)
-        while(picks.includes(cards[randIndex]) || cards[randIndex].supertype === 'Energy') {
-            randIndex = Math.floor(Math.random() * cards.length)
+        let randIndex = Math.floor(Math.random() * cardPool.length)
+        while(picks.includes(cardPool[randIndex]) || cardPool[randIndex].supertype === 'Energy') {
+            randIndex = Math.floor(Math.random() * cardPool.length)
         }
-        picks.push(cards[randIndex])
+        picks.push(cardPool[randIndex])
     }
 
     return picks
@@ -160,13 +151,16 @@ function pickNonRareCards(rarity, cards, userRareVals = {}) {
 function pickRareCard(cards, userRareVals = {}) {
     let currRareType =  getRareTypeforPack(userRareVals)
     console.log('rare-type:', currRareType)
-    let randIndex = Math.floor(Math.random() * cards.length)
+
     const rareCards = cards.filter(c => {
         return c.rarity.toLowerCase() !== 'uncommon' && c.rarity.toLowerCase() !== 'common'
     })
+    
+    let randIndex = Math.floor(Math.random() * rareCards.length)
 
+    // check if randomly picked card's type === rare type for pack
     while (rareCards[randIndex].rarity.toLowerCase() !== currRareType.toLowerCase()) {
-        randIndex = Math.floor(Math.random() * cards.length)
+        randIndex = Math.floor(Math.random() * rareCards.length)
     }
 
     return rareCards[randIndex]
@@ -187,9 +181,8 @@ function getRareTypeforPack(userRareVals) {
             i++
         }
     }
-    console.log(roulette)
 
     const randIndex = Math.floor(Math.random() * 100)
 
     return roulette[randIndex]
-    }
+}
