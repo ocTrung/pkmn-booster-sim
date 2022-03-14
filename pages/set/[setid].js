@@ -8,6 +8,7 @@ export default function Sets(props) {
         if (typeof window !== 'undefined') {
             const storedRareTypes = []
             const keys = Object.keys(window.localStorage)
+            keys = keys.filter(k => k != 'setid')
 
             keys.forEach(k => {
                 const val = JSON.parse(window.localStorage.getItem(k))
@@ -60,17 +61,20 @@ export default function Sets(props) {
 
     // initialize rareTypes
     useEffect(() => {
-        if (cards.length > 0 && window.localStorage.length === 0) {
+        if (cards.length > 0 && window.localStorage.length === 0 || window.localStorage.setid !== setid) {
+            console.log('initializer effect ran')
             setRareTypes(getRarityList(cards))
         }
     }, [cards])
 
     useEffect(() => {
+        console.log('storage effect ran')
         if (rareTypes) {
             rareTypes.forEach(type => {
                 window.localStorage.setItem(type.rarity, JSON.stringify(type))
             })
         }
+        window.localStorage.setItem('setid', setid)
     })
     
     const handleChange = (e) => {
