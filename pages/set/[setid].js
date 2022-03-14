@@ -5,6 +5,8 @@ export default function Sets(props) {
     const [cards, setCards] = useState(() => props.cards)
     const [rareTypes, setRareTypes] = useState(null)
     const [pack, setPack] = useState(null)
+    const [totalRarityProb, setTotalRarityProb] = useState(0)
+    const [totalRolls, setTotalRolls] = useState(0)
     
     const formRef = useRef()
     const router = useRouter()
@@ -21,10 +23,10 @@ export default function Sets(props) {
 
         const outcomesList = Object.values(userRareVals)
         const total = outcomesList.reduce((pv, cv) => pv + cv)
-        console.log('total', total)
         if (total !== 100)
             throw 'rarity values must total 100'
 
+        setTotalRolls(totalRolls + 1)
         const commonsFromPack = []
         const uncommonsFromPack = []
         const raresFromPack = []
@@ -59,27 +61,31 @@ export default function Sets(props) {
         }
     }, [cards])
 
+    
+    const handleChange = () => {
+        const totalFavorableValue = 0
+        const rarityInputElements = formRef.current.elements
+        for (const e of rarityInputElements) {
+            totalFavorableValue += parseInt(e.value, 10)
+        }
+        setTotalRarityProb(totalFavorableValue)
+    }
+
     return (
         <>
             <form ref={formRef}>
                 {rareTypes && rareTypesList.map(rarity => {
                     return (
-                        <label> {rarity}
-                            <input type='text' id={rarity}></input>
-                        </label>
+                        <div>
+                            <label htmlFor={rarity}>{rarity} </label>
+                            <input type='text' id={rarity} onChange={handleChange} defaultValue={0}></input>
+                        </div>
                     )
                 })}
             </form>
-            Rare Types:
-            <ul>
-                {rareTypes && rareTypesList.map(rarity => {
-                    return (
-                        <li>
-                            {rarity}
-                        </li>
-                    )
-                })}
-            </ul>
+            points left: {100 - totalRarityProb}
+            <br></br>
+            packs opened: {totalRolls}
             <br></br>
             <button onClick={() => handleGeneratePack()}>generate pack</button>
             <br></br>
@@ -153,18 +159,15 @@ function pickNonRareCards(rarity, cards, userRareVals = {}) {
 
 function pickRareCard(cards, userRareVals = {}) {
     let currRareType =  getRareTypeforPack(userRareVals)
-    console.log('rare-type', currRareType)
+    console.log('rare-type:', currRareType)
     let randIndex = Math.floor(Math.random() * cards.length)
     const rareCards = cards.filter(c => {
         return c.rarity.toLowerCase() !== 'uncommon' && c.rarity.toLowerCase() !== 'common'
     })
 
     while (rareCards[randIndex].rarity.toLowerCase() !== currRareType.toLowerCase()) {
-        console.log(rareCards[randIndex].rarity.toLowerCase(), currRareType.toLowerCase())
         randIndex = Math.floor(Math.random() * cards.length)
     }
-
-    console.log(rareCards[randIndex])
 
     return rareCards[randIndex]
 }
@@ -184,6 +187,7 @@ function getRareTypeforPack(userRareVals) {
             i++
         }
     }
+    console.log(roulette)
 
     const randIndex = Math.floor(Math.random() * 100)
 
