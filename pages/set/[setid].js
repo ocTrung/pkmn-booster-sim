@@ -3,7 +3,21 @@ import { useState, useEffect, useRef } from 'react'
 
 export default function Sets(props) {
     const [cards, setCards] = useState(() => props.cards)
-    const [rareTypes, setRareTypes] = useState(null)
+    const [rareTypes, setRareTypes] = useState(() => {
+        const isWindow = typeof window
+        if (typeof window !== 'undefined') {
+            const storedRareTypes = []
+            const keys = Object.keys(window.localStorage)
+
+            keys.forEach(k => {
+                const val = JSON.parse(window.localStorage.getItem(k))
+                storedRareTypes.push(val)
+            })
+            return storedRareTypes || null
+        }
+        return null
+    })
+    // const [rareTypes, setRareTypes] = useState(null)
     const [pack, setPack] = useState(null)
     const [totalRarityOutcomes, setTotalRarityOutcomes] = useState(0)
     const [totalRolls, setTotalRolls] = useState(0)
@@ -12,7 +26,6 @@ export default function Sets(props) {
     const router = useRouter()
     const { setid } = router.query
 
-    const rareTypesList = rareTypes === null ? null : Object.keys(rareTypes)
     let t0 = null
     
     function handleGeneratePack() {
@@ -45,34 +58,55 @@ export default function Sets(props) {
         console.log(`Call to handleGeneratePack took ${t1 - t0} milliseconds.`);
     }
 
+    // initialize rareTypes
     useEffect(() => {
-        if (cards.length > 0) {
+        if (cards.length > 0 && window.localStorage.length === 0) {
             setRareTypes(getRarityList(cards))
         }
     }, [cards])
-    
-    const handleChange = () => {
-        const totalFavorableValue = 0
-        const rarityInputElements = formRef.current.elements
-        for (const e of rarityInputElements) {
-            totalFavorableValue += parseInt(e.value, 10)
+
+    useEffect(() => {
+        if (rareTypes) {
+            rareTypes.forEach(type => {
+                window.localStorage.setItem(type.rarity, JSON.stringify(type))
+            })
         }
-        setTotalRarityOutcomes(totalFavorableValue)
+    })
+    
+    const handleChange = (e) => {
+        const inputRarity = e.target.id
+        const outcomes = parseInt(e.target.value)
+
+        const newRareTypes = rareTypes.map(r => {
+            if (r.rarity === inputRarity)
+                return {rarity: inputRarity, favorableOutcomes: outcomes}
+            else
+                return r
+        })
+
+        setRareTypes(newRareTypes)
     }
+
+    let totalFavorableOutcomes = rareTypes ? rareTypes.reduce((pv, cv) => cv.favorableOutcomes + pv, 0) : 0
 
     return (
         <>
             <form ref={formRef}>
-                {rareTypes && rareTypesList.map(rarity => {
+                {rareTypes && rareTypes.map(r => {
                     return (
-                        <div key={rarity}>
-                            <label htmlFor={rarity}>{rarity} </label>
-                            <input type='text' id={rarity} onChange={handleChange} defaultValue={0}></input>
+                        <div key={r.rarity}>
+                            <label htmlFor={r.rarity}>{r.rarity} </label>
+                            <input 
+                                type='text' 
+                                id={r.rarity} 
+                                onChange={handleChange} 
+                                value={rareTypes.find(el => el.rarity === r.rarity).favorableOutcomes}>
+                            </input>
                         </div>
                     )
                 })}
             </form>
-            points left: {100 - totalRarityOutcomes}
+            points left: {100 - totalFavorableOutcomes}
             <br></br>
             packs opened: {totalRolls}
             <br></br>
@@ -108,13 +142,14 @@ export async function getStaticProps({ params }) {
 }
 
 function getRarityList(cards) {
-    const newRarities = {}
+    const newRarities = []
     
     for (const c of cards) {
-        if (Object.hasOwn(newRarities, c.rarity) || c.rarity === 'Common' || c.rarity === 'Uncommon')
+        const hasAddedRarity = newRarities.find(e => e.rarity === c.rarity) !== undefined
+        if (hasAddedRarity || c.rarity === 'Common' || c.rarity === 'Uncommon')
             continue
         else
-            newRarities[c.rarity] = 0
+            newRarities.push({rarity: c.rarity, favorableOutcomes: 0})
     }
 
     return newRarities
