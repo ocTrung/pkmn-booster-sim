@@ -3,22 +3,7 @@ import { useState, useEffect, useRef } from 'react'
 
 export default function Sets(props) {
     const [cards, setCards] = useState(() => props.cards)
-    const [rareTypes, setRareTypes] = useState(() => {
-        const isWindow = typeof window
-        if (typeof window !== 'undefined') {
-            const storedRareTypes = []
-            const keys = Object.keys(window.localStorage)
-            keys = keys.filter(k => k != 'setid')
-
-            keys.forEach(k => {
-                const val = JSON.parse(window.localStorage.getItem(k))
-                storedRareTypes.push(val)
-            })
-            return storedRareTypes || null
-        }
-        return null
-    })
-    // const [rareTypes, setRareTypes] = useState(null)
+    const [rareTypes, setRareTypes] = useState(null)
     const [pack, setPack] = useState(null)
     const [totalRarityOutcomes, setTotalRarityOutcomes] = useState(0)
     const [totalRolls, setTotalRolls] = useState(0)
@@ -64,9 +49,21 @@ export default function Sets(props) {
         if (cards.length > 0 && window.localStorage.length === 0 || window.localStorage.setid !== setid) {
             console.log('initializer effect ran')
             setRareTypes(getRarityList(cards))
+            window.localStorage.clear()
+        } else if (window.localStorage.setid === setid){
+            let keys = Object.keys(window.localStorage)
+            keys = keys.filter(k => k != 'setid')
+            const storedRareTypes = []
+
+            keys.forEach(k => {
+                const val = JSON.parse(window.localStorage.getItem(k))
+                storedRareTypes.push(val)
+            })
+            setRareTypes(storedRareTypes)
         }
     }, [cards])
 
+    // save rarity outcomes to local storage
     useEffect(() => {
         console.log('storage effect ran')
         if (rareTypes) {
@@ -76,7 +73,7 @@ export default function Sets(props) {
         }
         window.localStorage.setItem('setid', setid)
     })
-    
+
     const handleChange = (e) => {
         const inputRarity = e.target.id
         const outcomes = parseInt(e.target.value)
