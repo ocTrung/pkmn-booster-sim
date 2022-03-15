@@ -1,33 +1,21 @@
 import { useRouter } from 'next/router'
 import { useState, useEffect, useRef } from 'react'
 
-export default function Sets(props) {
-    const [cards, setCards] = useState(() => props.cards)
+export default function Sets({ cards }) {
     const [rareTypes, setRareTypes] = useState(null)
     const [pack, setPack] = useState(null)
-    const [totalRarityOutcomes, setTotalRarityOutcomes] = useState(0)
     const [totalRolls, setTotalRolls] = useState(0)
     
-    const formRef = useRef()
     const router = useRouter()
     const { setid } = router.query
 
-    let t0 = null
     
     function handleGeneratePack() {
         // for benchmarking
-        t0 = performance.now()
-        
-        // Get rare probabilities from user input
-        const userRareVals = {}
-        const rarityInputElements = formRef.current.elements
-        for (const e of rarityInputElements) {
-            userRareVals[e.id] = parseInt(e.value, 10)
-        }
+        let t0 = performance.now()
 
         // temporary error handling for invalid probability
-        const outcomesList = Object.values(userRareVals)
-        const total = outcomesList.reduce((pv, cv) => pv + cv)
+        const total = rareTypes.reduce((pv, cv) => cv.favorableOutcomes + pv, 0)
         if (total !== 100)
             throw 'rarity values must total 100'
 
@@ -36,7 +24,7 @@ export default function Sets(props) {
     
         pack.push(...pickNonRareCards('common', cards))
         pack.push(...pickNonRareCards('uncommon', cards))
-        pack.push(pickRareCard(cards, userRareVals))
+        pack.push(pickRareCard(cards, rareTypes))
         setPack(pack)
 
         // for benchmarking
@@ -46,26 +34,26 @@ export default function Sets(props) {
 
     // initialize rareTypes
     useEffect(() => {
-        if (cards.length > 0 && window.localStorage.length === 0 || window.localStorage.setid !== setid) {
-            console.log('initializer effect ran')
-            setRareTypes(getRarityList(cards))
-            window.localStorage.clear()
-        } else if (window.localStorage.setid === setid){
-            let keys = Object.keys(window.localStorage)
-            keys = keys.filter(k => k != 'setid')
-            const storedRareTypes = []
+        let newRareTypes = null
 
-            keys.forEach(k => {
-                const val = JSON.parse(window.localStorage.getItem(k))
-                storedRareTypes.push(val)
-            })
-            setRareTypes(storedRareTypes)
+        if (cards.length > 0) {
+            newRareTypes = getRarityList(cards)
         }
+        if (setid === window.localStorage.setid) {
+            newRareTypes.forEach(t => {
+                const rarityName = t.rarity
+                const rareTypefromStorage = JSON.parse(window.localStorage.getItem(rarityName))
+                t.favorableOutcomes = rareTypefromStorage.favorableOutcomes
+            })
+        }
+        else {
+            window.localStorage.clear()
+        }
+        setRareTypes(newRareTypes)
     }, [cards])
 
     // save rarity outcomes to local storage
     useEffect(() => {
-        console.log('storage effect ran')
         if (rareTypes) {
             rareTypes.forEach(type => {
                 window.localStorage.setItem(type.rarity, JSON.stringify(type))
@@ -92,7 +80,7 @@ export default function Sets(props) {
 
     return (
         <>
-            <form ref={formRef}>
+            <form>
                 {rareTypes && rareTypes.map(r => {
                     return (
                         <div key={r.rarity}>
@@ -184,7 +172,7 @@ function pickNonRareCards(rarity, cards, userRareVals = {}) {
     return picks
 }
 
-function pickRareCard(cards, userRareVals = {}) {
+function pickRareCard(cards, userRareVals) {
     let currRareType =  getRareTypeforPack(userRareVals)
     console.log('rare-type:', currRareType)
 
@@ -209,11 +197,20 @@ function getRareTypeforPack(userRareVals) {
     const roulette = new Array(100)
     let i = 0
 
-    for (const [rarityType, favorableOutcomes] of Object.entries(userRareVals)) {
+    // for (const [rarityType, favorableOutcomes] of Object.entries(userRareVals)) {
+    //     let start = i
+
+    //     while (i < start + favorableOutcomes) {
+    //         roulette[i] = rarityType
+    //         i++
+    //     }
+    // }
+
+    for (const {rarity, favorableOutcomes} of userRareVals) {
         let start = i
 
         while (i < start + favorableOutcomes) {
-            roulette[i] = rarityType
+            roulette[i] = rarity
             i++
         }
     }
