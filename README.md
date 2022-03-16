@@ -21,12 +21,13 @@ API used : https://docs.pokemontcg.io/
 
 # TODO
 must have
+- styling
 - gray out 'generate pack' if probabilities are invalid
 - search for sets
 - ‘Reveal’ button -> card flip animation
+
 - error handling
     - promo sets
-- common layout
 - correct card distribution per set
 - accurate booster pack (10 cards, 1 basic energy, => 5 common, 3 uncommon, [reverse slot/parallel slot], 1 rare, 1 energy)
 

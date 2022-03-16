@@ -1,0 +1,26 @@
+.container {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  /* background-color: rgba(50, 50, 50, 0.564); */
+}
+
+.icon {
+  /* grid-column: 2 / 3;
+  justify-self: end; */
+}
+
+.title {
+  color:rgb(242, 242, 242);
+  font-weight: 300;
+}
+
+.search {
+  height: 75%;
+  max-width: 65ch;
+  align-self: end;
+  border-radius: 2em;
+}
+
+.right {
+  width: 68px;
+}

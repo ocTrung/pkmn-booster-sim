@@ -1,0 +1,12 @@
+.img {
+  max-inline-size: 100%;
+  block-size: auto;
+  display:block;
+}
+
+.container {
+  /* min-width: 150px;
+  width: 16%; */
+  /* height: 284px; */
+  background-color: rgb(230, 0, 255);
+}
