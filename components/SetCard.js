@@ -3,9 +3,9 @@ import { useRouter } from 'next/router'
 import Link from 'next/link'
 
 const SetCard = ({ set }) => {
+  // const setName = set.name.toLowerCase()
   return (
-    
-    <Link href={`/set/${set.id}`}>
+    <Link href={`/set/${set.id}?setname=${set.name}`}>
       <a className={styles.a}>
         <div className={styles.cardContainer}>
           <img className={styles.img} src={set.images.logo}></img>

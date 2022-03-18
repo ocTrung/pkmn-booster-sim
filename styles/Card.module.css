@@ -1,12 +1,35 @@
+.rounded {
+  border-radius: 7%;
+}
+
 .img {
   max-inline-size: 100%;
   block-size: auto;
   display:block;
+  object-fit: cover;
+  composes: rounded;
+  background-color: #fcd634;
+  padding: 4px;
+  
+  opacity: 0%;
+  transform: rotateY(180deg);
+  transition: ease-in 1s;
 }
 
 .container {
-  /* min-width: 150px;
-  width: 16%; */
-  /* height: 284px; */
-  background-color: rgb(230, 0, 255);
+  composes: rounded;
+  background-size: contain;
+  background-position: 2.3px;
+
+  background-image: url('../public/pokemon-back.avif');
+  transition: ease-in 1s;
+}
+
+.showCard {
+  opacity: 100%;
+  transform: rotateY(0deg);
+}
+
+.hideBg {
+  background-image: none;
 }

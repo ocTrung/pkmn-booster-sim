@@ -2,3 +2,10 @@
   background-color: aqua;
   display: block;
 }
+
+.goToTop {
+  background-color: rgb(0, 255, 115);
+  position: fixed;
+  right: 50%;
+  bottom: 10px;
+}

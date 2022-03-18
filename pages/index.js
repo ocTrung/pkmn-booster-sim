@@ -12,8 +12,8 @@ export default function Home({ sets }) {
     <div className={styles.container}>
       <Head>
         <title>Poke Booster Sim</title>
-        <meta name="description" content="Pokemon booster pack simulator" />
-        <link rel="icon" href="/250 Ho-oh.ico" />
+        <meta name='description' content='Pokemon booster pack simulator' key='ogMeta'/>
+        <link rel='icon' href='/250 Ho-oh.ico' key='ogIcon'/>
       </Head>
       <Navbar></Navbar>
 

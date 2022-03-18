@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router'
-import { useState, useEffect } from 'react'
+import Head from 'next/head'
+import { useState, useEffect, useRef } from 'react'
 import BoosterPack from '../../components/BoosterPack'
 import RarityInputForm from '../../components/RarityInputForm'
 import { getRarityList, pickNonRareCards, pickRareCard } from '../utils'
@@ -9,10 +10,13 @@ export default function Sets({ cards: cardsfromSet }) {
 	const [rareTypes, setRareTypes] = useState(null)
 	const [pack, setPack] = useState(null)
 	const [totalRolls, setTotalRolls] = useState(0)
-	const router = useRouter()
-	const { setid } = router.query
+	const [longPage, setLongPage] = useState(false)
 
-	
+	const bottomDivRef = useRef()
+	const genPackBtnRef = useRef()
+	const router = useRouter()
+	const { setid, setname } = router.query
+
 	function handleGeneratePack() {
 		// for benchmarking
 		let t0 = performance.now()
@@ -65,7 +69,7 @@ export default function Sets({ cards: cardsfromSet }) {
 		window.localStorage.setItem('setid', setid)
 	})
 
-	const handleOutcomeInputChange = (e) => {
+	const handleProbabilityChange = (e) => {
 		const inputRarity = e.target.id
 		const outcomes = parseInt(e.target.value)
 
@@ -79,16 +83,50 @@ export default function Sets({ cards: cardsfromSet }) {
 		setRareTypes(newRareTypes)
 	}
 
+	// useEffect(()=> {
+	// 	window.onscroll = () => {
+	// 		if (window.scrollY > 400)
+	// 			setUserAtTop(false)
+	// 		else
+	// 			setUserAtTop(true)
+	// 	}
+	// }, [])
 
+	useEffect(()=> {
+		// console.log(document.body.clientHeight)
+		// if (document.body.clientHeight > 700)
+		// 	console.log('page is long')
+		// else
+		// 	console.log('page is fine')
+		window.addEventListener('resize', ()=> {
+			if(document.body.clientHeight > 1000)
+				setLongPage(true)
+			else
+			setLongPage(false)
+		})
+	})
+	console.log('rendered')
+
+	
+	
 	return (
 		<>
-			<RarityInputForm rareTypes={ rareTypes } handleChange={ handleOutcomeInputChange }></RarityInputForm>
+			<Head>
+				<title>{setname}</title>
+				<meta name="description" content="Pokemon booster pack simulator" key='ogMeta'/>
+				<link rel="icon" href="/250 Ho-oh.ico" key='ogIcon'/>
+			</Head>
+			<RarityInputForm rareTypes={ rareTypes } handleChange={ handleProbabilityChange }></RarityInputForm>
 	
 			<p>packs opened: {totalRolls}</p>
 
-			<button className={styles.genPackBtn} onClick={() => handleGeneratePack()}>generate pack</button>
+			<button className={styles.genPackBtn} onClick={() => handleGeneratePack()} ref={ genPackBtnRef }>generate pack</button>
+			{ longPage && <button className={styles.genPackBtn} onClick={() => bottomDivRef.current.scrollIntoView()}>jump to rare</button> }
 
-			{ pack?.length > 0 && <BoosterPack pack={pack}></BoosterPack> }
+			{ pack?.length > 0 && <BoosterPack pack={pack} totalRolls={totalRolls}></BoosterPack> }
+			
+			{ longPage && <button className={styles.goToTop} onClick={() => window.scrollTo(0,0)}>go to top</button> }
+			<div ref={ bottomDivRef } id='bottomDiv'></div>
 		</>
 	)
 }

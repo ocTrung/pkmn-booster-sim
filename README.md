@@ -21,15 +21,16 @@ API used : https://docs.pokemontcg.io/
 
 # TODO
 must have
-- styling
+- style pack gen page
+- card flip animation
 - gray out 'generate pack' if probabilities are invalid
 - search for sets
-- ‘Reveal’ button -> card flip animation
 
 - error handling
     - promo sets
-- correct card distribution per set
-- accurate booster pack (10 cards, 1 basic energy, => 5 common, 3 uncommon, [reverse slot/parallel slot], 1 rare, 1 energy)
+- featured sets w/ accuracy
+    - correct card distribution per set
+    - accurate booster pack (10 cards, 1 basic energy, => 5 common, 3 uncommon, [reverse slot/parallel slot], 1 rare, 1 energy)
 
 nice to have
 - Pack value from tcg price
@@ -41,6 +42,7 @@ nice to have
 
 # Done
 - Save probability in storage
+- style home page
 
 # Features
-- used static site generation to pre-render 140 pages
+- used static site generation to pre-render 140 pages (build time: )
