@@ -3,7 +3,9 @@ import Image from 'next/image'
 import Link from 'next/link'
 import Header from '../components/Header'
 import Navbar from '../components/Navbar'
+import Sets from '../components/SetsContainer'
 import styles from '../styles/Home.module.css'
+
 
 export default function Home({ sets }) {
   return (
@@ -14,18 +16,10 @@ export default function Home({ sets }) {
         <link rel="icon" href="/250 Ho-oh.ico" />
       </Head>
       <Navbar></Navbar>
-      <Header></Header>
 
       <main className={styles.main}>
-        <ul>
-          {sets?.map(s => (
-            <li key={s.id}>  
-              <Link href={`/set/${s.id}`}>
-                <a>{s.name}</a>
-              </Link>
-            </li>
-          ))}
-        </ul>
+        <Header></Header>
+        <Sets sets={ sets }></Sets>
       </main>
 
       <footer className={styles.footer}>
@@ -35,14 +29,24 @@ export default function Home({ sets }) {
   )
 }
 
-export async function getServerSideProps() {
+// export async function getServerSideProps() {
+//   const res = await fetch('https://api.pokemontcg.io/v2/sets?orderBy=releaseDate&page=1&pageSize=10')
+//   const data = await res.json()
+//   const sets = data.data
+
+//   return {
+//     props: {
+//       sets
+//     }
+//   }
+// }
+
+export async function getStaticProps() {
   const res = await fetch('https://api.pokemontcg.io/v2/sets?orderBy=releaseDate&page=1&pageSize=10')
-  const data = await res.json()
+	const data = await res.json()
   const sets = data.data
 
-  return {
-    props: {
-      sets
-    }
-  }
+	return {
+		props: { sets }
+	}
 }

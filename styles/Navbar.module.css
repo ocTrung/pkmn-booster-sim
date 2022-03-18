@@ -1,12 +1,9 @@
 .container {
   display: grid;
-  grid-template-columns: auto 1fr auto;
-  /* background-color: rgba(50, 50, 50, 0.564); */
-}
-
-.icon {
-  /* grid-column: 2 / 3;
-  justify-self: end; */
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  margin-bottom: 3em;
+  background-color: rgb(26, 27, 30);
 }
 
 .title {
@@ -15,12 +12,29 @@
 }
 
 .search {
-  height: 75%;
-  max-width: 65ch;
-  align-self: end;
-  border-radius: 2em;
+  height: 2em;
+  max-width: 25ch;
+  align-self: center;
+  border-radius: 2% / 15%;
+  background-color: rgb(43,46,51);
+  border-style: none;
+  color: rgb(0, 0, 0);
+  font-size: 1em;
 }
 
 .right {
   width: 68px;
+}
+
+.img {
+  display: block;
+  transform: translateY(-15px);
+}
+
+.searchBtn {
+  height: min-content;
+  padding-inline: 1em;
+  padding-block: .50em;
+  border-style:none;
+  margin-block: 0;
 }

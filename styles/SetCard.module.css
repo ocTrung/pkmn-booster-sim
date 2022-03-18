@@ -1,0 +1,27 @@
+.img {
+  max-inline-size: 100%;
+  block-size: auto;
+  display:block;
+  background-color: rgb(251, 251, 251);
+  border-radius: 5%;
+  padding: 0.5em;
+}
+
+.cardContainer {
+  background-color: rgb(61, 63, 70);
+  border-radius: 5%;
+  padding: 1em;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  /* box-shadow: 3px 3px rgb(0, 0, 0); */
+  height: 100%;
+}
+
+.name {
+  margin-bottom: 0;
+}
+
+.a {
+  /* display:block; */
+}
