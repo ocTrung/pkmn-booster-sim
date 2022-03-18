@@ -22,9 +22,10 @@ API used : https://docs.pokemontcg.io/
 # TODO
 must have
 - style pack gen page
-- card flip animation
 - gray out 'generate pack' if probabilities are invalid
 - search for sets
+- show all button -> staggered flip animation, jumps to rare (replaces jump to rare)
+- make 'scroll to top' easier to use
 
 - error handling
     - promo sets
@@ -41,6 +42,7 @@ nice to have
 - Total spent from rolls
 
 # Done
+- card flip animation
 - Save probability in storage
 - style home page
 
