@@ -1,8 +1,10 @@
 import { useRouter } from 'next/router'
 import Head from 'next/head'
 import { useState, useEffect, useRef } from 'react'
-import BoosterPack from '../../components/BoosterPack'
+import CardContainer from '../../components/CardsContainer'
 import RarityInputForm from '../../components/RarityInputForm'
+import Button from '../../components/Button'
+import Error from '../../components/Error'
 import { getRarityList, pickNonRareCards, pickRareCard } from '../utils'
 import styles from '../../styles/Set.module.css'
 
@@ -10,28 +12,59 @@ export default function Sets({ cards: cardsfromSet }) {
 	const [rareTypes, setRareTypes] = useState(null)
 	const [pack, setPack] = useState(null)
 	const [totalRolls, setTotalRolls] = useState(0)
-	const [longPage, setLongPage] = useState(false)
+	const [isLongPage, setIsLongPage] = useState(false)
 
-	const bottomDivRef = useRef()
-	const genPackBtnRef = useRef()
 	const router = useRouter()
 	const { setid, setname } = router.query
+	const bottomDivRef = useRef()
+	
+	// error handling
+	let error = null
+	const totalChance = rareTypes?.reduce((total, t) => total + t.chance, 0)
+	const buttonDisabled = totalChance !== 100;
+
+	if (totalChance > 100)
+		error = { message: 'Total must not exceed 100'}
+
+	const pointsLeft = 100 - totalChance
+	
+	const handleProbabilityChange = (e) => {
+		let chanceInput = parseInt(e.target.value)
+		let newChanceVal
+
+		if (isNaN(chanceInput)) {
+			error = { message: 'Input must be a number' }
+			newChanceVal = 0
+		} else {
+			newChanceVal = chanceInput
+		}
+		
+		const inputRarity = e.target.id
+
+		const newRareTypes = rareTypes.map(r => {
+			if (r.rarity === inputRarity) 
+				return {rarity: inputRarity, chance: newChanceVal}
+			else 
+				return r
+		})
+
+		setRareTypes(newRareTypes)
+	}
 
 	function handleGeneratePack() {
 		// for benchmarking
 		let t0 = performance.now()
 
-		// temporary error handling for invalid probability
-		const total = rareTypes.reduce((pv, cv) => cv.favorableOutcomes + pv, 0)
-		if (total !== 100)
-			throw 'rarity values must total 100'
-
 		setTotalRolls(totalRolls + 1)
-		let newPack = []
+		let newPack = [
+			...pickNonRareCards('common', cardsfromSet),
+			...pickNonRareCards('uncommon', cardsfromSet),
+			pickRareCard(cardsfromSet, rareTypes)
+		]
 	
-		newPack.push(...pickNonRareCards('common', cardsfromSet))
-		newPack.push(...pickNonRareCards('uncommon', cardsfromSet))
-		newPack.push(pickRareCard(cardsfromSet, rareTypes))
+		// newPack.push(...pickNonRareCards('common', cardsfromSet))
+		// newPack.push(...pickNonRareCards('uncommon', cardsfromSet))
+		// newPack.push(pickRareCard(cardsfromSet, rareTypes))
 		setPack(newPack)
 
 		// for benchmarking
@@ -50,7 +83,7 @@ export default function Sets({ cards: cardsfromSet }) {
 			newRareTypes.forEach(t => {
 				const rarityName = t.rarity
 				const rareTypefromStorage = JSON.parse(window.localStorage.getItem(rarityName))
-				t.favorableOutcomes = rareTypefromStorage.favorableOutcomes
+				t.chance = rareTypefromStorage.chance
 			})
 		}
 		else {
@@ -59,7 +92,7 @@ export default function Sets({ cards: cardsfromSet }) {
 		setRareTypes(newRareTypes)
 	}, [cardsfromSet])
 
-	// save rarity outcomes to local storage
+	// save rarity chances to local storage
 	useEffect(() => {
 		if (rareTypes) {
 			rareTypes.forEach(type => {
@@ -69,46 +102,17 @@ export default function Sets({ cards: cardsfromSet }) {
 		window.localStorage.setItem('setid', setid)
 	})
 
-	const handleProbabilityChange = (e) => {
-		const inputRarity = e.target.id
-		const outcomes = parseInt(e.target.value)
-
-		const newRareTypes = rareTypes.map(r => {
-			if (r.rarity === inputRarity)
-				return {rarity: inputRarity, favorableOutcomes: outcomes}
-			else
-				return r
-		})
-
-		setRareTypes(newRareTypes)
-	}
-
-	// useEffect(()=> {
-	// 	window.onscroll = () => {
-	// 		if (window.scrollY > 400)
-	// 			setUserAtTop(false)
-	// 		else
-	// 			setUserAtTop(true)
-	// 	}
-	// }, [])
 
 	useEffect(()=> {
-		// console.log(document.body.clientHeight)
-		// if (document.body.clientHeight > 700)
-		// 	console.log('page is long')
-		// else
-		// 	console.log('page is fine')
 		window.addEventListener('resize', ()=> {
 			if(document.body.clientHeight > 1000)
-				setLongPage(true)
+				setIsLongPage(true)
 			else
-			setLongPage(false)
+			setIsLongPage(false)
 		})
 	})
 	console.log('rendered')
 
-	
-	
 	return (
 		<>
 			<Head>
@@ -116,16 +120,35 @@ export default function Sets({ cards: cardsfromSet }) {
 				<meta name="description" content="Pokemon booster pack simulator" key='ogMeta'/>
 				<link rel="icon" href="/250 Ho-oh.ico" key='ogIcon'/>
 			</Head>
+
 			<RarityInputForm rareTypes={ rareTypes } handleChange={ handleProbabilityChange }></RarityInputForm>
-	
+
+			{ error !== null && 
+				<div className={styles.error}>
+					{error.message}
+				</div>
+			}
+			
+			<p>points left: { isNaN(pointsLeft) ? 'Total invalid' : pointsLeft }</p>
 			<p>packs opened: {totalRolls}</p>
 
-			<button className={styles.genPackBtn} onClick={() => handleGeneratePack()} ref={ genPackBtnRef }>generate pack</button>
-			{ longPage && <button className={styles.genPackBtn} onClick={() => bottomDivRef.current.scrollIntoView()}>jump to rare</button> }
+			<Button
+				style={ styles.genPackBtn }
+				onClick={ handleGeneratePack } 
+				disabled={ buttonDisabled }
+			> 
+				generate pack
+			</Button>
 
-			{ pack?.length > 0 && <BoosterPack pack={pack} totalRolls={totalRolls}></BoosterPack> }
-			
-			{ longPage && <button className={styles.goToTop} onClick={() => window.scrollTo(0,0)}>go to top</button> }
+			{ isLongPage && 
+				<button className={styles.genPackBtn} onClick={() => bottomDivRef.current.scrollIntoView()}>jump to rare</button> }
+
+			{ pack?.length > 0 && 
+				<CardContainer pack={pack} totalRolls={totalRolls}></CardContainer> }
+
+			{ isLongPage && 
+				<button className={styles.goToTop} onClick={() => window.scrollTo(0,0)}>go to top</button> }
+
 			<div ref={ bottomDivRef } id='bottomDiv'></div>
 		</>
 	)
@@ -139,11 +162,12 @@ export async function getStaticPaths() {
 	const setIds = sets.map(s => {
 		return { params: { setid: s.id } }
 	})
+
 	return {
 	  paths: setIds,
 	  fallback: false
 	};
-  }
+}
 
 export async function getStaticProps({ params }) {
 	const res = await fetch(`https://api.pokemontcg.io/v2/cards?q=set.id:${params.setid}`)

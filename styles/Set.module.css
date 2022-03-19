@@ -1,6 +1,7 @@
 .genPackBtn {
   background-color: aqua;
   display: block;
+  font-size: 1.5em;
 }
 
 .goToTop {
@@ -8,4 +9,16 @@
   position: fixed;
   right: 50%;
   bottom: 10px;
+}
+
+.error {
+  border-width: 1px;
+  border-color: rgb(255, 98, 98);
+  border-style: solid;
+  color: rgb(255, 98, 98);
+  margin-block: 10px;
+  width: 25ch;
+  padding: .25em;
+  justify-content: center;
+  display: flex;
 }

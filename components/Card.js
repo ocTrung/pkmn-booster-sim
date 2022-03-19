@@ -16,7 +16,7 @@ const Card = ({ card }) => {
   }
 
   return (
-    <div className={containerStyle}>
+    <div id='card' className={containerStyle}>
       <img 
         key={card.id} 
         src={card.images.large} 

@@ -1,21 +1,5 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
-
 ## Pokemon Booster Pack Sim
 The goal of this project is to create a visceral experience for 'pull rates'(probabilities) for Pokemon booster packs and sets. The idea came to me after a cool new set released and I wanted to find out what my chances were of pulling the cards I was interested in.
-
-## Getting Started
-
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
 
 API used : https://docs.pokemontcg.io/
 
@@ -40,6 +24,9 @@ nice to have
 - One reverse holo per pack
 - Set cost of booster pack 
 - Total spent from rolls
+
+# bugs 
+- when user presses 'generate pack' -> flash of unwanted image 
 
 # Done
 - card flip animation

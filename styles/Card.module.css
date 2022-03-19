@@ -20,8 +20,10 @@
   composes: rounded;
   background-size: contain;
   background-position: 2.3px;
+  max-width: 300;
 
   background-image: url('../public/pokemon-back.avif');
+  background-repeat: no-repeat;
   transition: ease-in 1s;
 }
 

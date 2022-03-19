@@ -6,7 +6,7 @@ function getRarityList(cards) {
 		if (hasAddedRarity || c.rarity === 'Common' || c.rarity === 'Uncommon')
 			continue
 		else
-			newRarities.push({rarity: c.rarity, favorableOutcomes: 0})
+			newRarities.push({rarity: c.rarity, chance: 0})
 	}
 
 	return newRarities
@@ -65,10 +65,10 @@ function getRareTypeforPack(userRareVals) {
 	const roulette = new Array(100)
 	let i = 0
 
-	for (const {rarity, favorableOutcomes} of userRareVals) {
+	for (const {rarity, chance} of userRareVals) {
 		let start = i
 
-		while (i < start + favorableOutcomes) {
+		while (i < start + chance) {
 			roulette[i] = rarity
 			i++
 		}
