@@ -11,7 +11,8 @@ export default function Sets({ cards: cardsfromSet }) {
 	const [rareTypes, setRareTypes] = useState(null)
 	const [pack, setPack] = useState(null)
 	const [totalRolls, setTotalRolls] = useState(0)
-	const [isLongPage, setIsLongPage] = useState(false)
+	// const [isLongPage, setIsLongPage] = useState(false)
+	const [showCards, setShowCards] = useState([])
 
 	const router = useRouter()
 	const { setid, setname } = router.query
@@ -19,39 +20,6 @@ export default function Sets({ cards: cardsfromSet }) {
 
 	const totalChance = rareTypes?.reduce((total, type) => Number.isInteger(type.chance) ? total + type.chance : total, 0)
 	const buttonDisabled = totalChance !== 100;
-	
-	const handleProbabilityChange = (e) => {
-		let newChanceVal = parseInt(e.target.value)
-		
-		const inputRarity = e.target.id
-
-		const newRareTypes = rareTypes.map(r => {
-			if (r.rarity === inputRarity) 
-				return {rarity: inputRarity, chance: newChanceVal}
-			else 
-				return r
-		})
-
-		setRareTypes(newRareTypes)
-	}
-
-	const handleGeneratePack = () => {
-		// for benchmarking
-		let t0 = performance.now()
-
-		setTotalRolls(totalRolls + 1)
-
-		let newPack = [
-			...pickNonRareCards('common', cardsfromSet),
-			...pickNonRareCards('uncommon', cardsfromSet),
-			pickRareCard(cardsfromSet, rareTypes)
-		]
-		setPack(newPack)
-
-		// for benchmarking
-		const t1 = performance.now();
-		console.log(`Call to handleGeneratePack took ${t1 - t0} milliseconds.`);
-	}
 
 	// set rareTypes
 	useEffect(() => {
@@ -83,15 +51,58 @@ export default function Sets({ cards: cardsfromSet }) {
 		window.localStorage.setItem('setid', setid)
 	})
 
-	useEffect(()=> {
-		window.addEventListener('resize', ()=> {
-			if(document.body.clientHeight > 1000)
-				setIsLongPage(true)
-			else
-			setIsLongPage(false)
+	// check if page is long
+	// useEffect(()=> {
+	// 	window.addEventListener('resize', ()=> {
+	// 		if(document.body.clientHeight > 1000)
+	// 			setIsLongPage(true)
+	// 		else
+	// 		setIsLongPage(false)
+	// 	})
+	// })
+
+	const handleProbabilityChange = (e) => {
+		let newChanceVal = parseInt(e.target.value)
+		
+		const inputRarity = e.target.id
+
+		const newRareTypes = rareTypes.map(r => {
+			if (r.rarity === inputRarity) 
+				return {rarity: inputRarity, chance: newChanceVal}
+			else 
+				return r
 		})
-	})
-	console.log('rendered')
+
+		setRareTypes(newRareTypes)
+	}
+
+	const handleGeneratePack = () => {
+		// for benchmarking
+		let t0 = performance.now()
+
+		setTotalRolls(totalRolls + 1)
+		
+		let newPack = [
+			...pickNonRareCards('common', cardsfromSet),
+			...pickNonRareCards('uncommon', cardsfromSet),
+			pickRareCard(cardsfromSet, rareTypes)
+		]
+		setPack(newPack)
+		setShowCards(new Array(newPack.length).fill(false))
+
+		setTimeout(() => {
+			handleShowClick()
+		}, 600);
+
+		// for benchmarking
+		const t1 = performance.now();
+		console.log(`Call to handleGeneratePack took ${t1 - t0} milliseconds.`);
+	}
+
+	const handleShowClick = () => {
+		const newShowCards = showCards.map(showCard => true)
+		setShowCards(newShowCards)
+	}
 
 	return (
 		<>
@@ -116,14 +127,27 @@ export default function Sets({ cards: cardsfromSet }) {
       > 
         open new pack
       </Button>
+
+			<button
+				className={''}
+				onClick={ handleShowClick}
+			>
+				show all
+			</button>
+{/* 
 			{ isLongPage && 
-				<button className={styles.genPackBtn} onClick={() => bottomDivRef.current.scrollIntoView()}>jump to rare</button> }
+				<button className={styles.genPackBtn} onClick={() => bottomDivRef.current.scrollIntoView()}>jump to rare</button> } */}
 
 			{ pack?.length > 0 && 
-				<CardContainer pack={pack} totalRolls={totalRolls}></CardContainer> }
+				<CardContainer 
+					pack={pack} 
+					totalRolls={totalRolls} 
+					showCards={ showCards } 
+					setShowCards={ setShowCards }
+				/> }
 			
-			{ isLongPage && 
-			<button className={styles.goToTop} onClick={() => window.scrollTo(0,0)}>go to top</button> }
+			{/* { isLongPage && 
+			<button className={styles.goToTop} onClick={() => window.scrollTo(0,0)}>go to top</button> } */}
  
 			<div ref={ bottomDivRef } id='bottomDiv'></div> 
 		</>

@@ -1,7 +1,15 @@
 import styles from '../styles/Navbar.module.scss'
+import { useRouter } from 'next/router'
 
 const Navbar = () => {
-  console.log('navbar rendered')
+  const router = useRouter()
+
+  const handleSubmitSearch = (e) => {
+    e.preventDefault()
+    const query = e.target.elements.search.value
+    console.log(query)
+    router.push(`/Search?q=${query}`)
+  }
   return (
     <div  className={styles.container}>
       <picture className={styles.icon}>
@@ -14,28 +22,10 @@ const Navbar = () => {
         >
         </img>
       </picture>
-      {/* <h1 className={styles.title}>Pokemon Booster Pack Sim</h1> */}
-      {/* <picture className={styles.icon}>
-        <source srcset="/charizard.png" media="(min-width: 75em)"></source>
-        <source srcset="/charmeleon.png" media="(min-width: 40em)"></source>
-        <img src="/charmander.png" 
-          alt="A description of the image." 
-          >
-        </img>
-      </picture>
-      <div className={styles.right}></div> */}
-      {/* <picture className={styles.icon}>
-        <source srcSet="/blastoise.png" media="(min-width: 75em)"></source>
-        <source srcSet="/wartortle.png" media="(min-width: 40em)"></source>
-        <img 
-          src="/squirtle.png" 
-          alt="A description of the image." 
-          className={styles.img}
-        >
-        </img>
-      </picture> */}
 
-      <input className={styles.search} type='text' placeholder=' Search Sets'></input>
+      <form onSubmit={handleSubmitSearch}>
+        <input id='search' className={styles.search} type='text' placeholder=' Search Sets'></input>
+      </form>
     </div>
   )
 }

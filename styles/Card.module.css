@@ -11,9 +11,10 @@
   background-color: #fcd634;
   padding: 4px;
   
-  opacity: 100%;
-  transform: rotateY(180deg);
+  opacity: 0%;
+  transform: rotateY(120deg);
   transition: ease-in 1s;
+  transition-delay: calc(--order * 200ms);
 }
 
 .container {
