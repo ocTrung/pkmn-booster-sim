@@ -1,3 +1,5 @@
+@import './variables.module.scss';
+
 html,
 body {
   padding: 0;
@@ -7,8 +9,9 @@ body {
   /* font-family: 'Roboto Mono', monospace;   */
   /* font-family: 'Montserrat', sans-serif; */
   /* font-family: 'Poppins', sans-serif; */
-  background-color: rgb(20,21,23);
-  color: rgba(255, 255, 255, 0.955);
+  background-color: $gray-500;
+  // background-image: linear-gradient(45deg, rgb(0, 32, 97), $blue);
+  color: $gray-100;
 }
 
 a {

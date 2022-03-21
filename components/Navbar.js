@@ -1,6 +1,7 @@
-import styles from '../styles/Navbar.module.css'
+import styles from '../styles/Navbar.module.scss'
 
 const Navbar = () => {
+  console.log('navbar rendered')
   return (
     <div  className={styles.container}>
       <picture className={styles.icon}>

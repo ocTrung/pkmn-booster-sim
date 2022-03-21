@@ -1,5 +1,4 @@
-import styles from '../styles/SetCard.module.css'
-import { useRouter } from 'next/router'
+import styles from '../styles/SetCard.module.scss'
 import Link from 'next/link'
 
 const SetCard = ({ set }) => {

@@ -1,8 +1,10 @@
+@import "./variables.module";
+
 .container {
   display: grid;
   grid-template-columns: auto 1fr;
   align-items: center;
-  background-color: rgb(26, 27, 30);
+  background-color: $gray-400;
 }
 
 .title {
@@ -15,9 +17,9 @@
   max-width: 25ch;
   align-self: center;
   border-radius: 2% / 15%;
-  background-color: rgb(43,46,51);
+  background-color: $gray-300;
   border-style: none;
-  color: rgb(0, 0, 0);
+  color: $gray-200;
   font-size: 1em;
 }
 

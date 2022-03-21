@@ -1,9 +1,15 @@
 @import "./variables.module";
 
 .genPackBtn {
-  background-color: aqua;
-  display: block;
+  background-color: $yellow;
+  position: sticky;
+  top: 20px;
   font-size: 1.5em;
+  border-style: none;
+  border-radius: 2% / 15%;
+  padding-inline: 1em;
+  z-index: 1;
+  margin-bottom: 1em;
 }
 
 .goToTop {
@@ -14,13 +20,15 @@
 }
 
 .error {
-  border-width: 1px;
-  border-style: solid;
-  border-color: $error-color;
   color: $error-color;
   margin-block: 10px;
   width: 25ch;
   padding: .25em;
-  justify-content: center;
-  display: flex;
+}
+
+.inputSection {
+  display: grid;
+  grid-template-rows: 2fr;
+  grid-template-columns: 1fr;
+  grid-auto-flow: row;
 }
