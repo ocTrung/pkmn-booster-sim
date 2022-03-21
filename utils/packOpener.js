@@ -2,23 +2,24 @@ function getRarityList(cards) {
 	const newRarities = []
 	
 	for (const c of cards) {
-		const hasAddedRarity = newRarities.find(e => e.rarity === c.rarity) !== undefined
+		const hasAddedRarity = newRarities.find(added => added.rarityName === c.rarity) !== undefined
+
 		if (hasAddedRarity || c.rarity === 'Common' || c.rarity === 'Uncommon')
 			continue
 		else
-			newRarities.push({rarity: c.rarity, chance: 0})
+			newRarities.push({rarityName: c.rarity, chance: 0})
 	}
 
 	return newRarities
 }
 
-function pickNonRareCards(rarity, cards, userRareVals = {}) {
+function pickNonRareCards(rarityName, cards, userRareVals = {}) {
 	let picks = []
 	let total = null
 	let cardPool = []
 
 	// how many cards to add
-	switch (rarity) {
+	switch (rarityName) {
 		case 'common':
 			total = 6
 			cardPool = cards.filter(c => c.rarity.toLowerCase() === 'common')
@@ -65,11 +66,11 @@ function getRareTypeforPack(userRareVals) {
 	const roulette = new Array(100)
 	let i = 0
 
-	for (const {rarity, chance} of userRareVals) {
+	for (const {rarityName, chance} of userRareVals) {
 		let start = i
 
 		while (i < start + chance) {
-			roulette[i] = rarity
+			roulette[i] = rarityName
 			i++
 		}
 	}

@@ -2,6 +2,7 @@ import Head from 'next/head'
 import Header from '../components/Header'
 import Sets from '../components/SetsContainer'
 import styles from '../styles/Home.module.scss'
+import probabilityData from '../suggestedProbabilities.json'
 
 export default function Home({ sets }) {
   return (
@@ -14,7 +15,7 @@ export default function Home({ sets }) {
 
       <main className={styles.main}>
         <Header></Header>
-        <Sets sets={ sets }></Sets>
+        { sets && <Sets sets={ sets }></Sets> }
       </main>
 
       <footer className={styles.footer}>
@@ -25,9 +26,16 @@ export default function Home({ sets }) {
 }
 
 export async function getStaticProps() {
-  const res = await fetch('https://api.pokemontcg.io/v2/sets?orderBy=releaseDate&page=1&pageSize=10')
-	const data = await res.json()
-  const sets = data.data
+  const setIds = Object.keys(probabilityData)
+
+  let requests = setIds.map((setId) => {
+    const set = fetch(`https://api.pokemontcg.io/v2/sets?q=id:${setId}`)
+      .then(res => res.json())
+      .then(data => data.data[0])
+    return set
+  })
+  
+  const sets = await Promise.all(requests)
 
 	return {
 		props: { sets }

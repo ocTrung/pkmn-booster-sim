@@ -1,0 +1,44 @@
+{
+  "base1": {
+    "Rare Holo": 30,
+    "Rare": 70
+  },
+  "base2": {
+    "Rare Holo": 30,
+    "Rare": 70
+  },
+  "base3": {
+    "Rare Holo": 30,
+    "Rare": 70
+  },
+  "base4": {
+    "Rare Holo": 30,
+    "Rare": 70
+  },
+  "base5": {
+    "Rare Holo": 28,
+    "Rare": 70,
+    "Rare Secret": 2
+  },
+  "gym1": {
+    "Rare Holo": 30,
+    "Rare": 70
+  },
+  "gym2": {
+    "Rare Holo": 30,
+    "Rare": 70
+  },
+  "neo1": {
+    "Rare Holo": 30,
+    "Rare": 70
+  },
+  "neo2": {
+    "Rare Holo": 30,
+    "Rare": 70
+  },
+  "neo3": {
+    "Rare Holo": 28,
+    "Rare": 70,
+    "Rare Shining": 2
+  }
+}

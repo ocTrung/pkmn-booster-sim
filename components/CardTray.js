@@ -1,7 +1,7 @@
-import styles from '../styles/CardsContainer.module.css'
+import styles from '../styles/CardTray.module.css'
 import Card from './Card'
 
-const BoosterPack = ({ pack, totalRolls, showCards, setShowCards }) => {
+const CardTray = ({ pack, totalRolls }) => {
   return (
     <div id='cardContainer' className={styles.container}>
       {pack?.map((card, i) => 
@@ -10,12 +10,10 @@ const BoosterPack = ({ pack, totalRolls, showCards, setShowCards }) => {
           card={card} 
           totalRolls={totalRolls}
           index={i}
-          showCards={ showCards } 
-					setShowCards={ setShowCards }
         >
         </Card>)}
     </div>
   )
 }
 
-export default BoosterPack
+export default CardTray

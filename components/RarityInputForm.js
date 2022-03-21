@@ -1,5 +1,4 @@
 import styles from '../styles/RarityInputForm.module.scss'
-import Button from './Button'
 import { useState } from 'react'
 
 const RarityInputForm = ({ rareTypes, handleChange, totalRolls, totalChance }) => {
@@ -11,6 +10,7 @@ const RarityInputForm = ({ rareTypes, handleChange, totalRolls, totalChance }) =
 
   const pointsLeft = 100 - totalChance
   const pointsStyle = pointsLeft === 0 ? styles.success : styles.failure
+  
   return (
     <div className={styles.formContainer}>
       <button 
@@ -24,16 +24,16 @@ const RarityInputForm = ({ rareTypes, handleChange, totalRolls, totalChance }) =
       <form className={styles.form}>
         {rareTypes && rareTypes.map((r, index) => {
           return (
-            <div key={r.rarity} className={styles.inputSection}>
-              <label className={styles.label} htmlFor={r.rarity}>{r.rarity} </label>
+            <div key={r.rarityName} className={styles.inputSection}>
+              <label className={styles.label} htmlFor={r.rarityName}>{r.rarityName} </label>
               <input 
-                id={r.rarity} 
+                id={r.rarityName} 
                 className={styles.input}
                 type='number'
                 min='0'
                 max='100'
                 onChange={handleChange} 
-                value={rareTypes.find(el => el.rarity === r.rarity).chance}>
+                value={rareTypes.find(el => el.rarityName === r.rarityName).chance}>
               </input>
             </div>
           )

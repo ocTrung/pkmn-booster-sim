@@ -1,18 +1,18 @@
 import { useRouter } from 'next/router'
 import Head from 'next/head'
 import { useState, useEffect, useRef } from 'react'
-import CardContainer from '../../components/CardsContainer'
+
+import CardTray from '../../components/CardTray'
 import RarityInputForm from '../../components/RarityInputForm'
 import { getRarityList, pickNonRareCards, pickRareCard } from '../../utils/packOpener'
 import styles from '../../styles/Set.module.scss'
-import Button from '../../components/Button'
+import probabilityData from '../../suggestedProbabilities.json'
 
-export default function Sets({ cards: cardsfromSet }) {
+export default function Sets({ cardsfromSet }) {
 	const [rareTypes, setRareTypes] = useState(null)
 	const [pack, setPack] = useState(null)
 	const [totalRolls, setTotalRolls] = useState(0)
 	// const [isLongPage, setIsLongPage] = useState(false)
-	const [showCards, setShowCards] = useState([])
 
 	const router = useRouter()
 	const { setid, setname } = router.query
@@ -30,13 +30,21 @@ export default function Sets({ cards: cardsfromSet }) {
 		}
 		if (setid === window.localStorage.setid) {
 			newRareTypes.forEach(t => {
-				const rarityName = t.rarity
+				const rarityName = t.rarityName
 				const rareTypefromStorage = JSON.parse(window.localStorage.getItem(rarityName))
 				t.chance = rareTypefromStorage.chance
 			})
 		}
 		else {
 			window.localStorage.clear()
+
+			if (Object.hasOwn(probabilityData, setid)) {
+				newRareTypes.forEach(t => {
+					const rarityName = t.rarityName
+					const chance = probabilityData[setid][rarityName]
+					t.chance = chance
+				})
+			}
 		}
 		setRareTypes(newRareTypes)
 	}, [cardsfromSet])
@@ -45,7 +53,7 @@ export default function Sets({ cards: cardsfromSet }) {
 	useEffect(() => {
 		if (rareTypes) {
 			rareTypes.forEach(type => {
-				window.localStorage.setItem(type.rarity, JSON.stringify(type))
+				window.localStorage.setItem(type.rarityName, JSON.stringify(type))
 			})
 		}
 		window.localStorage.setItem('setid', setid)
@@ -67,8 +75,8 @@ export default function Sets({ cards: cardsfromSet }) {
 		const inputRarity = e.target.id
 
 		const newRareTypes = rareTypes.map(r => {
-			if (r.rarity === inputRarity) 
-				return {rarity: inputRarity, chance: newChanceVal}
+			if (r.rarityName === inputRarity) 
+				return {rarityName: inputRarity, chance: newChanceVal}
 			else 
 				return r
 		})
@@ -88,20 +96,10 @@ export default function Sets({ cards: cardsfromSet }) {
 			pickRareCard(cardsfromSet, rareTypes)
 		]
 		setPack(newPack)
-		setShowCards(new Array(newPack.length).fill(false))
-
-		setTimeout(() => {
-			handleShowClick()
-		}, 600);
 
 		// for benchmarking
 		const t1 = performance.now();
 		console.log(`Call to handleGeneratePack took ${t1 - t0} milliseconds.`);
-	}
-
-	const handleShowClick = () => {
-		const newShowCards = showCards.map(showCard => true)
-		setShowCards(newShowCards)
 	}
 
 	return (
@@ -111,39 +109,36 @@ export default function Sets({ cards: cardsfromSet }) {
 				<meta name="description" content="Pokemon booster pack simulator" key='ogMeta'/>
 				<link rel="icon" href="/250 Ho-oh.ico" key='ogIcon'/>
 			</Head>
-
-			<RarityInputForm 
-				rareTypes={ rareTypes } 
-				handleChange={ handleProbabilityChange }
-				totalRolls={ totalRolls }
-				handleGeneratePack={ handleGeneratePack }
-				totalChance={ totalChance }
-			/>
-
-			<Button
-        style={ styles.genPackBtn }
-        onClick={ handleGeneratePack } 
-        disabled={ buttonDisabled }
-      > 
-        open new pack
-      </Button>
+			<header className={styles.header}>
+				<RarityInputForm 
+					rareTypes={ rareTypes } 
+					handleChange={ handleProbabilityChange }
+					totalRolls={ totalRolls }
+					handleGeneratePack={ handleGeneratePack }
+					totalChance={ totalChance }
+				/>
+				
+				<section className={styles.section}>
+					<h1 className={styles.sectionHeading}>How to use</h1>
+					Some featured sets will have suggested probabilities for rares. There is 1 guaranteed rare per pack. Users can customize the 'rare' probability distribution using the panel on the left. Enjoy!
+				</section>
+			</header>
 
 			<button
-				className={''}
-				onClick={ handleShowClick}
+				className={ styles.genPackBtn }
+				onClick={ handleGeneratePack } 
+				disabled={ buttonDisabled }
 			>
-				show all
+				open new pack
 			</button>
 {/* 
-			{ isLongPage && 
+{ isLongPage && 
 				<button className={styles.genPackBtn} onClick={() => bottomDivRef.current.scrollIntoView()}>jump to rare</button> } */}
 
 			{ pack?.length > 0 && 
-				<CardContainer 
+				<CardTray 
 					pack={pack} 
 					totalRolls={totalRolls} 
-					showCards={ showCards } 
-					setShowCards={ setShowCards }
 				/> }
 			
 			{/* { isLongPage && 
@@ -172,9 +167,9 @@ export async function getStaticPaths() {
 export async function getStaticProps({ params }) {
 	const res = await fetch(`https://api.pokemontcg.io/v2/cards?q=set.id:${params.setid}`)
 	const data = await res.json()
-	const cards = data.data
+	const cardsfromSet = data.data
 
 	return {
-		props: { cards }
+		props: { cardsfromSet }
 	}
 }

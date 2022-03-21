@@ -32,3 +32,18 @@
   grid-template-columns: 1fr;
   grid-auto-flow: row;
 }
+
+.header {
+  margin-block: 1em;
+  display: grid;
+  grid-template-columns: auto 1fr 1fr;
+  column-gap: 1em;
+}
+
+.sectionHeading {
+  margin-top: 0;
+}
+
+.section {
+  color: $gray-200;
+}

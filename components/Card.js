@@ -1,33 +1,21 @@
 import styles from '../styles/Card.module.css'
 import { useState } from 'react'
 
-const Card = ({ card, index, showCards, setShowCards }) => {
+const Card = ({ card, index }) => {
   let cardStyle = styles.img
   let containerStyle = styles.container
-
-  if (showCards && showCards[index]) {
-    cardStyle = styles.img + ' ' + styles.showCard
-    containerStyle = styles.container + ' ' + styles.hideBg
-  } 
-
-  const handleShowCard = () => {
-    const newShowCardVals = showCards.map((showCard, i) => index === i ? true : showCard)
-    setShowCards(newShowCardVals)
-  }
   
-  let delay = `calc(${index} * 200ms)`
-
-  if (showCards.some(showCard => showCard === false))
-    delay = '0ms'
+  let baseDelay = '250ms'
+  let delay = `calc(${index} * 200ms + ${baseDelay})`
 
   return (
-    <div id='card' className={containerStyle} onClick={ handleShowCard }>
+    <div id='card' className={containerStyle}>
       <img 
         key={card.id} 
         src={card.images.large} 
         alt={card.id} 
         className={cardStyle} 
-        style={{transitionDelay: delay}}
+        style={{animationDelay: delay}}
         />
     </div>
   )
