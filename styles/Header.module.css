@@ -1,12 +1,12 @@
 .container {
   max-width: 70ch;
-  margin-bottom: 50px;
+  margin-bottom: 3em;
+  margin-top: 3em;
 }
 
 .title {
   font-size: 4em;
   font-weight: 900;
-  /* color: #fac32b; */
   display: inline;
 }
 

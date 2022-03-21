@@ -2,7 +2,6 @@
   display: grid;
   grid-template-columns: auto 1fr;
   align-items: center;
-  margin-bottom: 3em;
   background-color: rgb(26, 27, 30);
 }
 

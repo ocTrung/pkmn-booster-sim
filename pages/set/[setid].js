@@ -4,9 +4,8 @@ import { useState, useEffect, useRef } from 'react'
 import CardContainer from '../../components/CardsContainer'
 import RarityInputForm from '../../components/RarityInputForm'
 import Button from '../../components/Button'
-import Error from '../../components/Error'
 import { getRarityList, pickNonRareCards, pickRareCard } from '../utils'
-import styles from '../../styles/Set.module.css'
+import styles from '../../styles/Set.module.scss'
 
 export default function Sets({ cards: cardsfromSet }) {
 	const [rareTypes, setRareTypes] = useState(null)

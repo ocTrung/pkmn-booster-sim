@@ -1,3 +1,5 @@
+@import "./variables.module";
+
 .genPackBtn {
   background-color: aqua;
   display: block;
@@ -13,9 +15,9 @@
 
 .error {
   border-width: 1px;
-  border-color: rgb(255, 98, 98);
   border-style: solid;
-  color: rgb(255, 98, 98);
+  border-color: $error-color;
+  color: $error-color;
   margin-block: 10px;
   width: 25ch;
   padding: .25em;
