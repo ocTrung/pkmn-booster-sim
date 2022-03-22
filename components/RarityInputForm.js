@@ -8,7 +8,7 @@ const RarityInputForm = ({ rareTypes, handleChange, totalOpened, totalChance }) 
 	if (totalChance > 100) 
     error = { message: 'Total must not exceed 100'}
 
-  const pointsLeft = 100 - totalChance
+  const pointsLeft = parseFloat((100 - totalChance).toFixed(2))
   const pointsStyle = pointsLeft === 0 ? styles.success : styles.failure
   
   return (
@@ -32,6 +32,7 @@ const RarityInputForm = ({ rareTypes, handleChange, totalOpened, totalChance }) 
                 type='number'
                 min='0'
                 max='100'
+                step='any'
                 onChange={handleChange} 
                 value={rareTypes.find(el => el.rarityName === r.rarityName).chance}>
               </input>

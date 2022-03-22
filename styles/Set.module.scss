@@ -37,6 +37,7 @@
   margin-block: 1em;
   display: grid;
   grid-template-columns: minmax(160px, auto) minmax(40ch, 66ch);
+  grid-template-columns: auto minmax(auto, 66ch);
   column-gap: 1em;
   justify-content: start;
 }
@@ -54,5 +55,5 @@
 }
 
 .details {
-  color: $gray-200;
+  color: $gray-100;
 }

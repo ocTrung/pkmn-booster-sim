@@ -13,7 +13,7 @@ function getRarityList(cards) {
 	return newRarities
 }
 
-function pickNonRareCards(rarityName, cards, userRareVals = {}) {
+function pickNonRareCards(rarityName, cards) {
 	let picks = []
 	let total = null
 	let cardPool = []
@@ -61,23 +61,47 @@ function pickRareCard(cards, userRareVals) {
 
 function getRareTypeforPack(userRareVals) {
 	if (!userRareVals)
-	return
+		return undefined
 
-	const roulette = new Array(100)
-	let i = 0
+	let rangeList = []
+	let rangePrototype = {
+		rarityName: '', 
+		range: {start: 0, end: 0}
+	}
 
-	for (const {rarityName, chance} of userRareVals) {
-		let start = i
+	// set up range for each Rare Val
+	let i = 0.0
+	userRareVals.forEach(({rarityName, chance}, index) => {
+		const newRangeObj = Object.create(rangePrototype)
+		newRangeObj.rarityName = rarityName
+		newRangeObj.range = {
+			start: i, 
+			end: index < userRareVals.length - 1 ? round100(chance + i) : 100
+		}
+		rangeList.push(newRangeObj)
+		i = round100(newRangeObj.range.end + 0.01)
+	})
 
-		while (i < start + chance) {
-			roulette[i] = rarityName
-			i++
+	const randFloat = (Math.random() * 100).toFixed(2)
+	let chosenRarity = null
+
+	// Check what range the random number is in
+	for (const {rarityName, range} of rangeList) {
+		if (randFloat >= range.start && randFloat <= range.end) {
+			chosenRarity = rarityName
+			break
 		}
 	}
 
-	const randIndex = Math.floor(Math.random() * 100)
-
-	return roulette[randIndex]
+	if (chosenRarity === null) {
+		console.log('randfloat', randFloat)
+		console.log(rangeList)
+	}
+	return chosenRarity
 }
 
-export { getRarityList, pickNonRareCards, pickRareCard }
+function round100(num) {
+	return parseFloat(num.toFixed(2))
+}
+
+export { getRarityList, pickNonRareCards, pickRareCard, round100 }

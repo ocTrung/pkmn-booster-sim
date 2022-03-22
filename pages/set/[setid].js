@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react'
 
 import CardTray from '../../components/CardTray'
 import RarityInputForm from '../../components/RarityInputForm'
-import { getRarityList, pickNonRareCards, pickRareCard } from '../../utils/packOpener'
+import { getRarityList, pickNonRareCards, pickRareCard, round100 } from '../../utils/packOpener'
 import styles from '../../styles/Set.module.scss'
 import probabilityData from '../../suggestedProbabilities.json'
 
@@ -18,7 +18,7 @@ export default function Sets({ cardsfromSet }) {
 	const { setid, setname } = router.query
 	const bottomDivRef = useRef()
 
-	const totalChance = rareTypes?.reduce((total, type) => Number.isInteger(type.chance) ? total + type.chance : total, 0)
+	const totalChance = rareTypes?.reduce((total, type) => typeof type.chance === 'number' ? total + type.chance : total, 0)
 	const buttonDisabled = totalChance !== 100;
 
 	// Initialize rare types
@@ -72,7 +72,7 @@ export default function Sets({ cardsfromSet }) {
 	// })
 
 	const handleProbabilityChange = (e) => {
-		let newChanceVal = parseInt(e.target.value)
+		let newChanceVal = round100(parseFloat(e.target.value))
 		const inputRarity = e.target.id
 
 		const newRareTypes = rareTypes.map(r => {
@@ -122,7 +122,7 @@ export default function Sets({ cardsfromSet }) {
 					<summary className={styles.summary}>How to use</summary>
 					Some featured sets will have suggested probabilities for rares. There is 1 guaranteed 
 					rare per pack. Users can customize the 'rare' probability distribution using the panel 
-					on the left. Enjoy!
+					on the left. Input accepts up to 2 decimal places. Enjoy!
 				</details>
 			</header>
 			<button

@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import SetsContainer from '../components/SetsContainer'
+import SetTray from '../components/SetTray'
 
 const Search = () => {
   const router = useRouter()
@@ -15,7 +15,7 @@ const Search = () => {
   }, [searchQuery])
 
   return (
-    <SetsContainer sets={searchResults}/>
+    <SetTray sets={searchResults}/>
   )
 }
 

@@ -26,7 +26,7 @@
 
 .inputSection {
   display: grid;
-  grid-template-columns: minmax(18ch, 1fr) auto;
+  grid-template-columns: minmax(18ch, 1fr) 10ch;
 }
 
 .input {
