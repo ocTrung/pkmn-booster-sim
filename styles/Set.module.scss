@@ -36,14 +36,23 @@
 .header {
   margin-block: 1em;
   display: grid;
-  grid-template-columns: auto 1fr 1fr;
+  grid-template-columns: minmax(160px, auto) minmax(40ch, 66ch);
   column-gap: 1em;
+  justify-content: start;
 }
 
-.sectionHeading {
-  margin-top: 0;
+@media (width < 700px) {
+  .header {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+  }
 }
 
-.section {
+.summary {
+  font-size: 1.25em;
+}
+
+.details {
   color: $gray-200;
 }

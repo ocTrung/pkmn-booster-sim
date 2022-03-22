@@ -118,10 +118,12 @@ export default function Sets({ cardsfromSet }) {
 					handleGeneratePack={ handleGeneratePack }
 					totalChance={ totalChance }
 				/>
-				<section className={styles.section}>
-					<h1 className={styles.sectionHeading}>How to use</h1>
-					Some featured sets will have suggested probabilities for rares. There is 1 guaranteed rare per pack. Users can customize the 'rare' probability distribution using the panel on the left. Enjoy!
-				</section>
+				<details className={styles.details} open>
+					<summary className={styles.summary}>How to use</summary>
+					Some featured sets will have suggested probabilities for rares. There is 1 guaranteed 
+					rare per pack. Users can customize the 'rare' probability distribution using the panel 
+					on the left. Enjoy!
+				</details>
 			</header>
 			<button
 				className={ styles.genPackBtn }
