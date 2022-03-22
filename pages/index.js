@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import Header from '../components/Header'
-import Sets from '../components/SetsContainer'
+import SetTray from '../components/SetTray'
 import styles from '../styles/Home.module.scss'
 import probabilityData from '../suggestedProbabilities.json'
 
@@ -15,7 +15,7 @@ export default function Home({ sets }) {
 
       <main className={styles.main}>
         <Header></Header>
-        { sets && <Sets sets={ sets }></Sets> }
+        { sets && <SetTray sets={ sets }/> }
       </main>
 
       <footer className={styles.footer}>

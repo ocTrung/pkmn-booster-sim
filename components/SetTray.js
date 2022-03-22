@@ -1,7 +1,7 @@
 import SetCard from './setCard'
 import styles from '../styles/SetsContainer.module.css'
 
-const Sets = ({ sets }) => {
+const SetTray = ({ sets }) => {
   return (
     <div className={styles.container}>
       {sets?.map(s => (
@@ -11,4 +11,4 @@ const Sets = ({ sets }) => {
   )
 }
 
-export default Sets
+export default SetTray

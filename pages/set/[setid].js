@@ -11,7 +11,7 @@ import probabilityData from '../../suggestedProbabilities.json'
 export default function Sets({ cardsfromSet }) {
 	const [rareTypes, setRareTypes] = useState(null)
 	const [pack, setPack] = useState(null)
-	const [totalRolls, setTotalRolls] = useState(0)
+	const [totalOpened, setTotalOpened] = useState(0)
 	// const [isLongPage, setIsLongPage] = useState(false)
 
 	const router = useRouter()
@@ -21,7 +21,7 @@ export default function Sets({ cardsfromSet }) {
 	const totalChance = rareTypes?.reduce((total, type) => Number.isInteger(type.chance) ? total + type.chance : total, 0)
 	const buttonDisabled = totalChance !== 100;
 
-	// set rareTypes
+	// Initialize rare types
 	useEffect(() => {
 		let newRareTypes = null
 
@@ -38,6 +38,8 @@ export default function Sets({ cardsfromSet }) {
 		else {
 			window.localStorage.clear()
 
+			// If currently viewed set is not the same set we viewed previously, 
+			// then check if the set is included in file with suggested probability distribution data
 			if (Object.hasOwn(probabilityData, setid)) {
 				newRareTypes.forEach(t => {
 					const rarityName = t.rarityName
@@ -49,7 +51,7 @@ export default function Sets({ cardsfromSet }) {
 		setRareTypes(newRareTypes)
 	}, [cardsfromSet])
 
-	// save rarity chances to local storage
+	// Save rarity chances to local storage
 	useEffect(() => {
 		if (rareTypes) {
 			rareTypes.forEach(type => {
@@ -71,7 +73,6 @@ export default function Sets({ cardsfromSet }) {
 
 	const handleProbabilityChange = (e) => {
 		let newChanceVal = parseInt(e.target.value)
-		
 		const inputRarity = e.target.id
 
 		const newRareTypes = rareTypes.map(r => {
@@ -88,7 +89,7 @@ export default function Sets({ cardsfromSet }) {
 		// for benchmarking
 		let t0 = performance.now()
 
-		setTotalRolls(totalRolls + 1)
+		setTotalOpened(totalOpened + 1)
 		
 		let newPack = [
 			...pickNonRareCards('common', cardsfromSet),
@@ -113,17 +114,15 @@ export default function Sets({ cardsfromSet }) {
 				<RarityInputForm 
 					rareTypes={ rareTypes } 
 					handleChange={ handleProbabilityChange }
-					totalRolls={ totalRolls }
+					totalRolls={ totalOpened }
 					handleGeneratePack={ handleGeneratePack }
 					totalChance={ totalChance }
 				/>
-				
 				<section className={styles.section}>
 					<h1 className={styles.sectionHeading}>How to use</h1>
 					Some featured sets will have suggested probabilities for rares. There is 1 guaranteed rare per pack. Users can customize the 'rare' probability distribution using the panel on the left. Enjoy!
 				</section>
 			</header>
-
 			<button
 				className={ styles.genPackBtn }
 				onClick={ handleGeneratePack } 
@@ -132,14 +131,12 @@ export default function Sets({ cardsfromSet }) {
 				open new pack
 			</button>
 {/* 
-{ isLongPage && 
+			{ isLongPage && 
 				<button className={styles.genPackBtn} onClick={() => bottomDivRef.current.scrollIntoView()}>jump to rare</button> } */}
 
 			{ pack?.length > 0 && 
-				<CardTray 
-					pack={pack} 
-					totalRolls={totalRolls} 
-				/> }
+				<CardTray pack={pack} totalRolls={totalOpened} /> 
+			}
 			
 			{/* { isLongPage && 
 			<button className={styles.goToTop} onClick={() => window.scrollTo(0,0)}>go to top</button> } */}
