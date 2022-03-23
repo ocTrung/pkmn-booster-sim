@@ -1,4 +1,4 @@
-import styles from '../styles/CardTray.module.css'
+import styles from '../styles/CardTray.module.scss'
 import Card from './Card'
 
 const CardTray = ({ pack, totalRolls }) => {

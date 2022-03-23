@@ -1,5 +1,5 @@
 import SetCard from './setCard'
-import styles from '../styles/SetsContainer.module.css'
+import styles from '../styles/SetTray.module.scss'
 
 const SetTray = ({ sets }) => {
   return (

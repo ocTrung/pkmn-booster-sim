@@ -1,5 +1,4 @@
-import styles from '../styles/Card.module.css'
-import { useState } from 'react'
+import styles from '../styles/Card.module.scss'
 
 const Card = ({ card, index }) => {
   let cardStyle = styles.img

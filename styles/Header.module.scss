@@ -1,3 +1,5 @@
+@import './variables.module.scss';
+
 .container {
   max-width: 70ch;
   margin-bottom: 3em;
@@ -11,14 +13,13 @@
 }
 
 .color {
-  color: #fac32b;
+  color: $yellow;
   font-style: italic;
 }
 
 .emphasis {
   composes: title;
-  color: #fac32b;
-  /* text-shadow: 4px 4px #246dff, -4px -4px #1624ff; */
+  color: $yellow;
 }
 
 
