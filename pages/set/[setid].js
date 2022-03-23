@@ -18,7 +18,7 @@ export default function Sets({ cardsfromSet }) {
 	const bottomDivRef = useRef()
 
 	const totalChance = rareTypes?.reduce((total, type) => typeof type.chance === 'number' ? total + type.chance : total, 0)
-	const buttonDisabled = totalChance !== 100;
+	const buttonDisabled = Math.ceil(totalChance) !== 100;
 
 	// Initialize rare types
 	useEffect(() => {
