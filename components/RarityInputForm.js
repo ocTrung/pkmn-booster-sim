@@ -1,14 +1,14 @@
 import styles from '../styles/RarityInputForm.module.scss'
 import { useState } from 'react'
 
-const RarityInputForm = ({ rareTypes, handleChange, totalOpened, totalChance }) => {
+const RarityInputForm = ({ rareTypes, handleChange, totalOpened, totalOdds }) => {
   const [showDetails, setShowDetails] = useState(true)
   let error = null
 
-	if (totalChance > 100) 
+	if (totalOdds > 100) 
     error = { message: 'Total must not exceed 100'}
 
-  const pointsLeft = parseFloat((100 - totalChance).toFixed(2))
+  const pointsLeft = parseFloat((100 - totalOdds).toFixed(2))
   const pointsStyle = pointsLeft === 0 ? styles.success : styles.failure
   
   return (
@@ -34,7 +34,7 @@ const RarityInputForm = ({ rareTypes, handleChange, totalOpened, totalChance }) 
                 max='100'
                 step='any'
                 onChange={handleChange} 
-                value={rareTypes.find(el => el.rarityName === r.rarityName).chance}>
+                value={rareTypes.find(el => el.rarityName === r.rarityName).odds}>
               </input>
             </div>
           )

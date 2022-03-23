@@ -7,7 +7,7 @@ function getRarityList(cards) {
 		if (hasAddedRarity || c.rarity === 'Common' || c.rarity === 'Uncommon')
 			continue
 		else
-			newRarities.push({rarityName: c.rarity, chance: 0})
+			newRarities.push({rarityName: c.rarity, odds: 0})
 	}
 
 	return newRarities
@@ -71,12 +71,12 @@ function getRareTypeforPack(userRareVals) {
 
 	// set up range for each Rare Val
 	let i = 0.0
-	userRareVals.forEach(({rarityName, chance}, index) => {
+	userRareVals.forEach(({rarityName, odds}, index) => {
 		const newRangeObj = Object.create(rangePrototype)
 		newRangeObj.rarityName = rarityName
 		newRangeObj.range = {
 			start: i, 
-			end: index < userRareVals.length - 1 ? round100(chance + i) : 100
+			end: index < userRareVals.length - 1 ? round100(odds + i) : 100
 		}
 		rangeList.push(newRangeObj)
 		i = round100(newRangeObj.range.end + 0.01)

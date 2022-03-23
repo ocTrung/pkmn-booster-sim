@@ -15,8 +15,8 @@ export default function Sets({ cardsfromSet }) {
 	const router = useRouter()
 	const { setid, setname } = router.query
 
-	const totalChance = rareTypes?.reduce((acc, type) => typeof type.chance === 'number' ? acc + type.chance : total, 0)
-	const buttonDisabled = Math.ceil(totalChance) !== 100;
+	const totalOdds = rareTypes?.reduce((acc, type) => typeof type.odds === 'number' ? acc + type.odds : total, 0)
+	const buttonDisabled = Math.ceil(totalOdds) !== 100;
 
 	// Initialize rare types
 	useEffect(() => {
@@ -29,7 +29,7 @@ export default function Sets({ cardsfromSet }) {
 			newRareTypes.forEach(t => {
 				const rarityName = t.rarityName
 				const rareTypefromStorage = JSON.parse(window.localStorage.getItem(rarityName))
-				t.chance = rareTypefromStorage.chance
+				t.odds = rareTypefromStorage.odds
 			})
 		}
 		else {
@@ -40,15 +40,15 @@ export default function Sets({ cardsfromSet }) {
 			if (Object.hasOwn(probabilityData, setid)) {
 				newRareTypes.forEach(t => {
 					const rarityName = t.rarityName
-					const chance = probabilityData[setid][rarityName]
-					t.chance = chance
+					const odds = probabilityData[setid][rarityName]
+					t.odds = odds
 				})
 			}
 		}
 		setRareTypes(newRareTypes)
 	}, [cardsfromSet])
 
-	// Save rarity chances to local storage
+	// Save rarity probabilities to local storage
 	useEffect(() => {
 		if (rareTypes) {
 			rareTypes.forEach(type => {
@@ -59,12 +59,12 @@ export default function Sets({ cardsfromSet }) {
 	})
 
 	const handleProbabilityChange = (e) => {
-		let newChanceVal = round100(parseFloat(e.target.value))
+		let newOdds = round100(parseFloat(e.target.value))
 		const inputRarity = e.target.id
 
 		const newRareTypes = rareTypes.map(r => {
 			if (r.rarityName === inputRarity) 
-				return {rarityName: inputRarity, chance: newChanceVal}
+				return {rarityName: inputRarity, odds: newOdds}
 			else 
 				return r
 		})
@@ -96,7 +96,7 @@ export default function Sets({ cardsfromSet }) {
 					handleChange={ handleProbabilityChange }
 					totalRolls={ totalOpened }
 					handleGeneratePack={ handleGeneratePack }
-					totalChance={ totalChance }
+					totalOdds={ totalOdds }
 				/>
 				<details className={styles.details} open>
 					<summary className={styles.summary}>How to use</summary>
