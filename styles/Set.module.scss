@@ -1,22 +1,19 @@
 @import "./variables.module";
 
-.genPackBtn {
-  background-color: $yellow;
-  position: sticky;
-  top: 20px;
+.btn {
   font-size: 1.5em;
   border-style: none;
   border-radius: 2% / 15%;
   padding-inline: 1em;
-  z-index: 1;
-  margin-bottom: 1em;
+  margin-bottom: 0.25em;
 }
 
-.goToTop {
-  background-color: rgb(0, 255, 115);
-  position: fixed;
-  right: 50%;
-  bottom: 10px;
+.genPackBtn {
+  composes: btn;
+  background-color: $yellow;
+  position: sticky;
+  top: 20px;
+  z-index: 1;
 }
 
 .error {

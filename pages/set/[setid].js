@@ -12,7 +12,6 @@ export default function Sets({ cardsfromSet }) {
 	const [rareTypes, setRareTypes] = useState(null)
 	const [pack, setPack] = useState(null)
 	const [totalOpened, setTotalOpened] = useState(0)
-	// const [isLongPage, setIsLongPage] = useState(false)
 
 	const router = useRouter()
 	const { setid, setname } = router.query
@@ -60,16 +59,6 @@ export default function Sets({ cardsfromSet }) {
 		}
 		window.localStorage.setItem('setid', setid)
 	})
-
-	// check if page is long
-	// useEffect(()=> {
-	// 	window.addEventListener('resize', ()=> {
-	// 		if(document.body.clientHeight > 1000)
-	// 			setIsLongPage(true)
-	// 		else
-	// 		setIsLongPage(false)
-	// 	})
-	// })
 
 	const handleProbabilityChange = (e) => {
 		let newChanceVal = round100(parseFloat(e.target.value))
@@ -132,18 +121,9 @@ export default function Sets({ cardsfromSet }) {
 			>
 				open new pack
 			</button>
-{/* 
-			{ isLongPage && 
-				<button className={styles.genPackBtn} onClick={() => bottomDivRef.current.scrollIntoView()}>jump to rare</button> } */}
-
 			{ pack?.length > 0 && 
 				<CardTray pack={pack} totalRolls={totalOpened} /> 
 			}
-			
-			{/* { isLongPage && 
-			<button className={styles.goToTop} onClick={() => window.scrollTo(0,0)}>go to top</button> } */}
- 
-			<div ref={ bottomDivRef } id='bottomDiv'></div> 
 		</>
 	)
 }
