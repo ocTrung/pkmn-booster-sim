@@ -27,7 +27,7 @@ export async function getStaticProps() {
   let sets = await getSets(setIds)
     .then(res => res)
     .catch(err => {
-      console.log(err)
+      console.log('err',err)
       return null
     })
   

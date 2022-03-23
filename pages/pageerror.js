@@ -9,6 +9,12 @@ const pageError = () => {
   switch (error) {
     case 'homepage':
       message = 'Oh no, there was an error visiting the home page!'
+      break
+    case 'boosterpackpage':
+      message = 'There was a problem loading the page for this set. Try refreshing or another set.'
+      break
+    default:
+      message = 'Page not found!'
   }
 
   console.log(error)

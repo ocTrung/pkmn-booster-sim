@@ -27,3 +27,16 @@ export async function getSets(setIds) {
     throw err
   }
 }
+
+export async function getCardsfromSet(setid) {
+  try {
+    const res = await fetch(`https://api.pokemontcg.io/v2/cards?q=set.id:${setid}`)
+    const data = await res.json()
+    const cardsfromSet = data.data
+
+    return cardsfromSet
+
+  } catch (err) {
+    throw err
+  }
+}

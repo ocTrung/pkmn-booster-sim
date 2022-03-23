@@ -4,9 +4,11 @@ import { useState, useEffect, useRef } from 'react'
 
 import CardTray from '../../components/CardTray'
 import RarityInputForm from '../../components/RarityInputForm'
-import { getRarityList, pickNonRareCards, pickRareCard, round100 } from '../../utils/packOpener'
 import styles from '../../styles/Set.module.scss'
 import probabilityData from '../../suggestedProbabilities.json'
+import { getRarityList, pickNonRareCards, pickRareCard, round100 } from '../../utils/packOpener'
+import { getCardsfromSet } from '../../utils/pokemonAPI'
+
 
 export default function Sets({ cardsfromSet }) {
 	const [rareTypes, setRareTypes] = useState(null)
@@ -135,11 +137,23 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }) {
-	const res = await fetch(`https://api.pokemontcg.io/v2/cards?q=set.id:${params.setid}`)
-	const data = await res.json()
-	const cardsfromSet = data.data
+	const cardsfromSet = await getCardsfromSet(params.setid)
+    .then(res => null)
+    .catch(err => {
+      console.log('err', err)
+      return null
+    })
+  
+  if (!cardsfromSet) {
+    return {
+      redirect: {
+        destination: '/pageerror?error=boosterpackpage',
+        permanent: false,
+      }
+    }
+  }
 
-	return {
+  return {
 		props: { cardsfromSet }
 	}
 }
