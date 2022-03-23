@@ -12,12 +12,10 @@ export default function Sets({ cardsfromSet }) {
 	const [rareTypes, setRareTypes] = useState(null)
 	const [pack, setPack] = useState(null)
 	const [totalOpened, setTotalOpened] = useState(0)
-
 	const router = useRouter()
 	const { setid, setname } = router.query
-	const bottomDivRef = useRef()
 
-	const totalChance = rareTypes?.reduce((total, type) => typeof type.chance === 'number' ? total + type.chance : total, 0)
+	const totalChance = rareTypes?.reduce((acc, type) => typeof type.chance === 'number' ? acc + type.chance : total, 0)
 	const buttonDisabled = Math.ceil(totalChance) !== 100;
 
 	// Initialize rare types
@@ -38,7 +36,7 @@ export default function Sets({ cardsfromSet }) {
 			window.localStorage.clear()
 
 			// If currently viewed set is not the same set we viewed previously, 
-			// then check if the set is included in file with suggested probability distribution data
+			// check if the set is included in file with suggested probability distribution data
 			if (Object.hasOwn(probabilityData, setid)) {
 				newRareTypes.forEach(t => {
 					const rarityName = t.rarityName
@@ -75,9 +73,6 @@ export default function Sets({ cardsfromSet }) {
 	}
 
 	const handleGeneratePack = () => {
-		// for benchmarking
-		let t0 = performance.now()
-
 		setTotalOpened(totalOpened + 1)
 		
 		let newPack = [
@@ -86,10 +81,6 @@ export default function Sets({ cardsfromSet }) {
 			pickRareCard(cardsfromSet, rareTypes)
 		]
 		setPack(newPack)
-
-		// for benchmarking
-		const t1 = performance.now();
-		console.log(`Call to handleGeneratePack took ${t1 - t0} milliseconds.`);
 	}
 
 	return (

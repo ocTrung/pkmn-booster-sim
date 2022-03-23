@@ -2,7 +2,6 @@ import styles from '../styles/SetCard.module.scss'
 import Link from 'next/link'
 
 const SetCard = ({ set }) => {
-  // const setName = set.name.toLowerCase()
   return (
     <Link href={`/set/${set.id}?setname=${set.name}`}>
       <a className={styles.a}>

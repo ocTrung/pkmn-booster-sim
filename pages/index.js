@@ -6,22 +6,17 @@ import probabilityData from '../suggestedProbabilities.json'
 
 export default function Home({ sets }) {
   return (
-    <div className={styles.container}>
+    <>
       <Head>
         <title>Poke Booster Sim</title>
         <meta name='description' content='Pokemon booster pack simulator' key='ogMeta'/>
         <link rel='icon' href='/250 Ho-oh.ico' key='ogIcon'/>
       </Head>
-
       <main className={styles.main}>
         <Header></Header>
         { sets && <SetTray sets={ sets }/> }
       </main>
-
-      <footer className={styles.footer}>
-        
-      </footer>
-    </div>
+    </>
   )
 }
 

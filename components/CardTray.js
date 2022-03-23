@@ -10,8 +10,8 @@ const CardTray = ({ pack, totalRolls }) => {
           card={card} 
           totalRolls={totalRolls}
           index={i}
-        >
-        </Card>)}
+        />
+      )}
     </div>
   )
 }

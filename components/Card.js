@@ -3,7 +3,6 @@ import styles from '../styles/Card.module.scss'
 const Card = ({ card, index }) => {
   let cardStyle = styles.img
   let containerStyle = styles.container
-  
   let baseDelay = '250ms'
   let delay = `calc(${index} * 200ms + ${baseDelay})`
 
