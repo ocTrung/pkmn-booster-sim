@@ -1,15 +1,20 @@
-import styles from '../styles/Navbar.module.scss'
 import { useRouter } from 'next/router'
+import { useState } from 'react'
 import Link from 'next/link'
+import styles from '../styles/Navbar.module.scss'
 
 const Navbar = () => {
+  const [query, setQuery] = useState('')
   const router = useRouter()
 
   const handleSubmitSearch = (e) => {
     e.preventDefault()
-    const query = e.target.elements.search.value
     router.push(`/Search?q=${query}`)
+    setQuery('')
   }
+
+  const handleChange = (e) => setQuery(e.target.value)
+
   return (
     <div  className={styles.container}>
       <Link href='/'>
@@ -28,7 +33,13 @@ const Navbar = () => {
       </Link>
 
       <form onSubmit={handleSubmitSearch}>
-        <input id='search' className={styles.search} type='text' placeholder=' Search Sets'></input>
+        <input 
+          id='search' 
+          className={styles.search} 
+          type='text' 
+          placeholder=' Search Sets' 
+          value={query} 
+          onChange={handleChange}></input>
       </form>
     </div>
   )
