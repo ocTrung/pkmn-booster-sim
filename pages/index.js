@@ -3,6 +3,7 @@ import Header from '../components/Header'
 import SetTray from '../components/SetTray'
 import styles from '../styles/Home.module.scss'
 import probabilityData from '../suggestedProbabilities.json'
+import { getSets } from '../utils/pokemonAPI'
 
 export default function Home({ sets }) {
   return (
@@ -23,16 +24,23 @@ export default function Home({ sets }) {
 export async function getStaticProps() {
   const setIds = Object.keys(probabilityData)
 
-  let requests = setIds.map((setId) => {
-    const set = fetch(`https://api.pokemontcg.io/v2/sets?q=id:${setId}`)
-      .then(res => res.json())
-      .then(data => data.data[0])
-    return set
-  })
+  let sets = await getSets(setIds)
+    .then(res => res)
+    .catch(err => {
+      console.log(err)
+      return null
+    })
   
-  const sets = await Promise.all(requests)
+  if (!sets) {
+    return {
+      redirect: {
+        destination: '/pageerror?error=homepage',
+        permanent: false,
+      }
+    }
+  }
 
-	return {
-		props: { sets }
-	}
+  return {
+    props: { sets }
+  }
 }
