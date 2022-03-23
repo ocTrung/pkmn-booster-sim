@@ -8,7 +8,6 @@ const Navbar = () => {
   const handleSubmitSearch = (e) => {
     e.preventDefault()
     const query = e.target.elements.search.value
-    console.log(query)
     router.push(`/Search?q=${query}`)
   }
   return (

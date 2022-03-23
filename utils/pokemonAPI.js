@@ -40,3 +40,16 @@ export async function getCardsfromSet(setid) {
     throw err
   }
 }
+
+export async function searchSets(searchQuery) {
+  try {
+    const res = await fetch(`https://api.pokemontcg.io/v2/sets?q=name:"${searchQuery}"&orderBy=releaseDate&page=1&pageSize=10`)
+    const data = await res.json()
+    const sets = data.data
+    
+    return sets
+
+  } catch (err) {
+    throw err
+  }
+}

@@ -138,7 +138,7 @@ export async function getStaticPaths() {
 
 export async function getStaticProps({ params }) {
 	const cardsfromSet = await getCardsfromSet(params.setid)
-    .then(res => null)
+    .then(res => res)
     .catch(err => {
       console.log('err', err)
       return null

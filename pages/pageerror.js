@@ -13,6 +13,9 @@ const pageError = () => {
     case 'boosterpackpage':
       message = 'There was a problem loading the page for this set. Try refreshing or another set.'
       break
+    case 'searchpage':
+      message = 'There was a problem retrieving search results. Try refreshing or changing the query.'
+      break
     default:
       message = 'Page not found!'
   }

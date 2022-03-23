@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import SetTray from '../components/SetTray'
+import { searchSets } from '../utils/pokemonAPI'
 
 const Search = () => {
   const router = useRouter()
@@ -20,11 +21,22 @@ const Search = () => {
 }
 
 export async function getSearchResults(searchQuery) {
-  console.log('fetch', searchQuery)
-  const res = await fetch(`https://api.pokemontcg.io/v2/sets?q=name:"${searchQuery}"&orderBy=releaseDate&page=1&pageSize=10`)
-	const data = await res.json()
-  const sets = data.data
-
+  const sets = await searchSets(searchQuery)
+    .then(res => res)
+    .catch(err => {
+      console.log('err',err)
+      return null
+    })
+  
+  if (!sets) {
+    return {
+      redirect: {
+        destination: '/pageerror?error=searchpage',
+        permanent: false,
+      }
+    }
+  }
+  
 	return sets
 }
 
