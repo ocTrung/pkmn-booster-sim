@@ -90,7 +90,7 @@ export default function Sets({ cardsfromSet }) {
 			<Head>
 				<title>{setname}</title>
 				<meta name="description" content="Pokemon booster pack simulator" key='ogMeta'/>
-				<link rel="icon" href="/250 Ho-oh.ico" key='ogIcon'/>
+				<link rel="icon" href="/Ho-oh.png" key='ogIcon'/>
 			</Head>
 			<header className={styles.header}>
 				<RarityInputForm 

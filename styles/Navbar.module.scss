@@ -29,7 +29,9 @@
 
 .img {
   display: block;
-  transform: translateY(-15px);
+  width: 50px;
+  padding: 4px;
+  // transform: translateY(-15px);
 }
 
 .searchBtn {
@@ -38,4 +40,10 @@
   padding-block: .50em;
   border-style:none;
   margin-block: 0;
+}
+
+@media (width > 75em) {
+  .img {
+    padding: 8px;
+  }
 }

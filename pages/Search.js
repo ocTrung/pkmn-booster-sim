@@ -1,5 +1,6 @@
-import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
+import Head from 'next/head'
 import SetTray from '../components/SetTray'
 import { searchSets } from '../utils/pokemonAPI'
 
@@ -16,7 +17,18 @@ const Search = () => {
   }, [searchQuery])
 
   return (
-    <SetTray sets={searchResults}/>
+    <>
+      <Head>
+        <title>Search Sets</title>
+				<meta name="description" content="Pokemon booster pack simulator" key='ogMeta'/>
+				<link rel="icon" href="/Ho-oh.png" key='ogIcon'/>
+      </Head>
+      { 
+        searchResults?.length !== 0 
+        ? <SetTray sets={searchResults}/>
+        : 'No results' 
+      }
+    </>
   )
 }
 
