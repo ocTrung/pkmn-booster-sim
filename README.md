@@ -1,7 +1,10 @@
 ## Pokemon Booster Pack Sim
-The goal of this project is to create a visceral experience for 'pull rates'(probabilities) for Pokemon booster packs and sets. The idea came to me after a cool new set released and I wanted to find out what my chances were of pulling the cards I was interested in.
+A simulator to get a feel for "pull rates" of a set. Choose from featured sets or use the search bar to find a set.
+
 
 API used : https://docs.pokemontcg.io/
 
 # Features
-- used static site generation to pre-render 140 pages (build time: )
+- Used static site generation to pre-render pages for every set that has been released (100+)
+- Users can modify probability distribution of packs
+- Choose from featured sets or use the search to find a set
