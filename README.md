@@ -1,4 +1,4 @@
-## Pokemon Booster Pack Sim
+## Pokemon Booster Pack Simulator
 A simulator to get a feel for "pull rates" of a set. Choose from featured sets or use the search bar to find a set.
 
 ![ezcv logo](https://raw.githubusercontent.com/ocTrung/pkmn-booster-sim/main/assets/screenshot-1.png)
