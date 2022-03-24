@@ -96,7 +96,7 @@ export default function Sets({ cardsfromSet }) {
 				<RarityInputForm 
 					rareTypes={ rareTypes } 
 					handleChange={ handleProbabilityChange }
-					totalRolls={ totalOpened }
+					totalOpened={ totalOpened }
 					handleGeneratePack={ handleGeneratePack }
 					totalOdds={ totalOdds }
 				/>
