@@ -11,18 +11,18 @@
   padding: 4px;
   background-color: #fcd634;
   opacity: 0%;
-  transform: rotateY(120deg);
+  transform: rotateY(90deg);
 
   animation-name: flip;
-  animation-duration: 2s;
+  animation-duration: 1s;
   animation-timing-function: ease-in;
   animation-fill-mode: forwards;
+  animation-delay: 1s;
 }
 
 @keyframes flip {
   0% {
     opacity: 0%;
-    transform: rotateY(120deg);
   }
   100% {
     opacity: 100%;
@@ -35,27 +35,23 @@
   background-size: contain;
   background-position: 2.3px;
   max-width: 300;
-
   background-image: url('../public/pokemon-back.avif');
   background-repeat: no-repeat;
+  opacity: 0%;
+
   animation-name: flipBackImg;
-  animation-duration: 1s;
+  animation-duration: 2s;
   animation-fill-mode: forwards;
   animation-timing-function: ease-in;
-  animation-delay: 500ms;
+  // animation-delay: 500ms;
 }
 
 @keyframes flipBackImg {
-  75% {
-    transform: translateY(0px);
-    opacity: 0%;
+  25% {
+    opacity: 100%;
   }
   100% {
     background-image: none;
+    opacity: 100%
   }
-}
-
-.showCard {
-  opacity: 100%;
-  transform: rotateY(0deg);
 }

@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router'
 import Head from 'next/head'
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 
 import CardTray from '../../components/CardTray'
 import RarityInputForm from '../../components/RarityInputForm'
@@ -114,8 +114,8 @@ export default function Sets({ cardsfromSet }) {
 			>
 				open new pack
 			</button>
-			{ pack?.length > 0 && 
-				<CardTray pack={pack} totalRolls={totalOpened} /> 
+			{ pack?.length > 0 &&
+				<CardTray pack={pack} totalRolls={totalOpened} />
 			}
 		</>
 	)

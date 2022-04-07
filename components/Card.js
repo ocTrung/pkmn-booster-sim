@@ -14,6 +14,8 @@ const Card = ({ card, index }) => {
         alt={card.id} 
         className={cardStyle} 
         style={{animationDelay: delay}}
+        width='380px'
+        height='519.5px'
         />
     </div>
   )
