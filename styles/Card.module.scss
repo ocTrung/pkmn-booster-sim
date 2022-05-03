@@ -5,7 +5,7 @@
 .img {
   max-inline-size: 100%;
   block-size: auto;
-  display:block;
+  display: block;
   object-fit: cover;
   composes: rounded;
   padding: 4px;
@@ -20,16 +20,6 @@
   animation-delay: 1s;
 }
 
-@keyframes flip {
-  0% {
-    opacity: 0%;
-  }
-  100% {
-    opacity: 100%;
-    transform: rotateY(0deg);
-  }
-}
-
 .container {
   composes: rounded;
   background-size: contain;
@@ -37,7 +27,7 @@
   max-width: 300;
   background-image: url('../public/pokemon-back.avif');
   background-repeat: no-repeat;
-  opacity: 0%;
+  opacity: 100%;
 
   animation-name: flipBackImg;
   animation-duration: 2s;
@@ -46,12 +36,12 @@
   // animation-delay: 500ms;
 }
 
-@keyframes flipBackImg {
-  25% {
-    opacity: 100%;
-  }
-  100% {
-    background-image: none;
-    opacity: 100%
-  }
-}
+// @keyframes flipBackImg {
+//   25% {
+//     opacity: 100%;
+//   }
+//   100% {
+//     background-image: none;
+//     opacity: 100%
+//   }
+// }

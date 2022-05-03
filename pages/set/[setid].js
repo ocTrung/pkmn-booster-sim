@@ -39,12 +39,23 @@ export default function Sets({ cardsfromSet }) {
 
 			// If currently viewed set is not the same set we viewed previously, 
 			// check if the set is included in file with suggested probability distribution data
-			if (Object.hasOwn(probabilityData, setid)) {
-				newRareTypes.forEach(t => {
-					const rarityName = t.rarityName
-					const odds = probabilityData[setid][rarityName]
-					t.odds = odds
-				})
+			// For browsers that do not yet support Object.hasOwn()
+			if (typeof Object.hasOwn !== 'function') {
+				if (probabilityData.hasOwnProperty(setid)) {
+					newRareTypes.forEach(t => {
+						const rarityName = t.rarityName
+						const odds = probabilityData[setid][rarityName]
+						t.odds = odds
+					})
+				}
+			} else {
+				if (Object.hasOwn(probabilityData, setid)) {
+					newRareTypes.forEach(t => {
+						const rarityName = t.rarityName
+						const odds = probabilityData[setid][rarityName]
+						t.odds = odds
+					})
+				}
 			}
 		}
 		setRareTypes(newRareTypes)
