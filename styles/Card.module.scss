@@ -2,16 +2,14 @@
   border-radius: .5em;
 }
 
-.nextImg {
+.img {
+  max-inline-size: 100%;
+  block-size: auto;
+  display: block;
+  object-fit: cover;
   composes: rounded;
-}
-
-.cardWrapper {
-  composes: rounded;
-  width: fit-content;
-  padding: 4px;
-  // background-color: #f5c90a;
   opacity: 0%;
+
   animation-name: flip;
   animation-duration: 1s;
   animation-timing-function: ease-in;

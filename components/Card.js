@@ -1,5 +1,4 @@
 import styles from '../styles/Card.module.scss'
-import Image from 'next/image'
 
 const Card = ({ card, index }) => {
   let containerStyle = styles.container
@@ -8,19 +7,15 @@ const Card = ({ card, index }) => {
 
   return (
     <div id='card' className={containerStyle} style={{ animationDelay: delay }}>
-      <div
-        className={styles.cardWrapper}
+      <img
+        key={card.id}
+        src={card.images.large}
+        alt={card.id}
+        className={styles.img}
         style={{ animationDelay: delay }}
-      >
-        <Image
-          key={card.id}
-          className={styles.nextImg}
-          src={card.images.large}
-          alt={card.id}
-          width='380px'
-          height='519.5px'
-        />
-      </div>
+        width='380px'
+        height='519.5px'
+      />
     </div>
   )
 }

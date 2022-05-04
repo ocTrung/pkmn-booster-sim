@@ -10,8 +10,6 @@ function getRarityList(cards) {
 			newRarities.push({ rarityName: c.rarity, odds: 0 })
 	}
 
-	console.log('newrarities', newRarities)
-
 	return newRarities
 }
 
@@ -45,8 +43,6 @@ function pickNonRareCards(rarityName, cards) {
 
 function pickRareCard(cards, userRareVals) {
 	let currRareType = getRareTypeforPack(userRareVals)
-
-	console.log('cards', cards)
 
 	const rareCards = cards.filter(c => {
 		if (c.rarity === undefined)
