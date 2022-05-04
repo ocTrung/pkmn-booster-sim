@@ -121,7 +121,7 @@ export default function Sets({ cardsFromSet }) {
 		<>
 			<Head>
 				<title>{setname}</title>
-				<meta name="description" content="Pokemon booster pack simulator" key='ogMeta' />
+				<meta name='description' content='A simulator to get a feel for pull rates of a set. Choose from featured sets or use the search bar to find a set.' key='ogMeta' />
 				<link rel="icon" href="/Ho-oh.ico" key='ogIcon' />
 			</Head>
 			<header className={styles.header}>

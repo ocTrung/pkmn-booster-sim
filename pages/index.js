@@ -10,12 +10,12 @@ export default function Home({ sets }) {
     <>
       <Head>
         <title>Poke Booster Sim</title>
-        <meta name='description' content='Pokemon booster pack simulator' key='ogMeta'/>
-        <link rel='icon' href='/Ho-oh.ico' key='ogIcon'/>
+        <meta name='description' content='A simulator to get a feel for pull rates of a set. Choose from featured sets or use the search bar to find a set.' key='ogMeta' />
+        <link rel='icon' href='/Ho-oh.ico' key='ogIcon' />
       </Head>
       <main className={styles.main}>
         <Header></Header>
-        { sets && <SetTray sets={ sets }/> }
+        {sets && <SetTray sets={sets} />}
       </main>
     </>
   )
@@ -27,10 +27,10 @@ export async function getStaticProps() {
   let sets = await getSets(setIds)
     .then(res => res)
     .catch(err => {
-      console.log('err',err)
+      console.log('err', err)
       return null
     })
-  
+
   if (!sets) {
     return {
       redirect: {
