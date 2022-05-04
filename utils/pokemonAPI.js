@@ -1,12 +1,17 @@
 export async function getSet(setId) {
-  const res = await fetch(`https://api.pokemontcg.io/v2/sets/${setId}`, {
-    method: 'GET',
-    headers: {
-      'X-API-KEY': process.env.API_KEY
-    }
-  })
+  try {
+    const res = await fetch(`https://api.pokemontcg.io/v2/sets/${setId}`, {
+      method: 'GET',
+      headers: {
+        'X-API-KEY': process.env.API_KEY
+      }
+    })
 
-  return res
+    return res
+
+  } catch (err) {
+    throw err
+  }
 }
 
 export async function getSets(setIds) {
@@ -18,11 +23,11 @@ export async function getSets(setIds) {
 
       return set
     })
-  
+
     const sets = await Promise.all(requestBatch)
-  
+
     return sets
-  
+
   } catch (err) {
     throw err
   }
@@ -30,7 +35,12 @@ export async function getSets(setIds) {
 
 export async function getCardsfromSet(setid) {
   try {
-    const res = await fetch(`https://api.pokemontcg.io/v2/cards?q=set.id:${setid}`)
+    const res = await fetch(`https://api.pokemontcg.io/v2/cards?q=set.id:${setid}`, {
+      method: 'GET',
+      headers: {
+        'X-API-KEY': process.env.API_KEY
+      }
+    })
     const data = await res.json()
     const cardsfromSet = data.data
 
@@ -43,10 +53,15 @@ export async function getCardsfromSet(setid) {
 
 export async function searchSets(searchQuery) {
   try {
-    const res = await fetch(`https://api.pokemontcg.io/v2/sets?q=name:"${searchQuery}"&orderBy=releaseDate&page=1&pageSize=10`)
+    const res = await fetch(`https://api.pokemontcg.io/v2/sets?q=name:"${searchQuery}"&orderBy=releaseDate&page=1&pageSize=10`, {
+      method: 'GET',
+      headers: {
+        'X-API-KEY': process.env.API_KEY
+      }
+    })
     const data = await res.json()
     const sets = data.data
-    
+
     return sets
 
   } catch (err) {

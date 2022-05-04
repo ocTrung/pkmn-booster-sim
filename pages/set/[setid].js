@@ -10,22 +10,22 @@ import { getRarityList, pickNonRareCards, pickRareCard, round100 } from '../../u
 import { getCardsfromSet } from '../../utils/pokemonAPI'
 
 
-export default function Sets({ cardsfromSet = null }) {
+export default function Sets({ cardsFromSet }) {
 	const [rareTypes, setRareTypes] = useState(null)
 	const [pack, setPack] = useState(null)
 	const [totalOpened, setTotalOpened] = useState(0)
 	const router = useRouter()
 	const { setid, setname } = router.query
 
-	const totalOdds = rareTypes?.reduce((acc, type) => typeof type.odds === 'number' ? acc + type.odds : total, 0)
-	const buttonDisabled = Math.ceil(totalOdds) !== 100;
+	const totalOdds = rareTypes?.reduce((acc, type) => typeof type.odds === 'number' ? acc + type.odds : acc, 0)
+	const isTotalOdds100 = totalOdds !== 100;
 
 	// Initialize rare types
 	useEffect(() => {
 		let newRareTypes = null
 
-		if (cardsfromSet?.length > 0) {
-			newRareTypes = getRarityList(cardsfromSet)
+		if (cardsFromSet?.length > 0) {
+			newRareTypes = getRarityList(cardsFromSet)
 		}
 		if (setid === window.localStorage.setid) {
 			newRareTypes?.forEach(t => {
@@ -59,7 +59,7 @@ export default function Sets({ cardsfromSet = null }) {
 			}
 		}
 		setRareTypes(newRareTypes)
-	}, [cardsfromSet])
+	}, [cardsFromSet])
 
 	// Save rarity probabilities to local storage
 	useEffect(() => {
@@ -92,13 +92,13 @@ export default function Sets({ cardsfromSet = null }) {
 
 		if (rareTypes.find(type => type.rarityName === 'Promo') && rareTypes?.length === 1) {
 			newPack = [
-				pickRareCard(cardsfromSet, rareTypes)
+				pickRareCard(cardsFromSet, rareTypes)
 			]
 		} else {
 			newPack = [
-				...pickNonRareCards('common', cardsfromSet),
-				...pickNonRareCards('uncommon', cardsfromSet),
-				pickRareCard(cardsfromSet, rareTypes)
+				...pickNonRareCards('common', cardsFromSet),
+				...pickNonRareCards('uncommon', cardsFromSet),
+				pickRareCard(cardsFromSet, rareTypes)
 			]
 		}
 
@@ -107,7 +107,13 @@ export default function Sets({ cardsfromSet = null }) {
 
 	if (router.isFallback) {
 		return (
-			<h1>Building new page...</h1>
+			<h1>Building page...</h1>
+		)
+	}
+
+	if (cardsFromSet.length === 0) {
+		return (
+			<h1>You may be trying to access a new set. Please wait 10 seconds before refreshing to allow the new page to build.</h1>
 		)
 	}
 
@@ -129,14 +135,14 @@ export default function Sets({ cardsfromSet = null }) {
 				<details className={styles.details} open>
 					<summary className={styles.summary}>How to use</summary>
 					Some featured sets will have suggested probabilities for rares. There is 1 guaranteed
-					rare per pack. Users can customize the &quot;rare&quot; probability distribution using the panel
-					on the left. Input accepts up to 2 decimal places. Enjoy!
+					rare per pack. Users can customize the probability distribution for rarities using the input panel.
+					Input accepts up to 2 decimal places (ex: 1.25). Enjoy!
 				</details>
 			</header>
 			<button
 				className={styles.genPackBtn}
 				onClick={handleGeneratePack}
-				disabled={buttonDisabled}
+				disabled={isTotalOdds100}
 			>
 				open new pack
 			</button>
@@ -158,22 +164,15 @@ export async function getStaticPaths() {
 
 	return {
 		paths: setIds,
-		fallback: true
+		fallback: 'blocking'
 	};
 }
 
 export async function getStaticProps({ params }) {
-	const cardsfromSet = await getCardsfromSet(params.setid)
-		.then(res => {
-			return res
-		})
-		.catch(err => {
-			console.log('err', err)
-			return null
-		})
+	const cardsFromSet = await getCardsfromSet(params.setid)
 
 	return {
-		props: { cardsfromSet },
+		props: { cardsFromSet },
 		revalidate: 10
 	}
 }

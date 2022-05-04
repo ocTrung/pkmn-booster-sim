@@ -42,7 +42,7 @@ const RarityInputForm = ({ rareTypes, handleChange, totalOpened, totalOdds }) =>
         </form>}
       <section className={styles.feedback}>
         <p className={styles.feedback}>
-          points left: <span className={pointsStyle}> {isNaN(pointsLeft) ? '' : pointsLeft} </span>
+          points left: <span className={pointsStyle}> {isNaN(pointsLeft) ? 'All inputs must be a number' : pointsLeft} </span>
         </p>
         <p className={styles.feedbackText}>packs opened: {totalOpened}</p>
       </section>
