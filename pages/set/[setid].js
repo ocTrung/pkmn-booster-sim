@@ -76,9 +76,9 @@ export default function Sets({ cardsfromSet }) {
 		const inputRarity = e.target.id
 
 		const newRareTypes = rareTypes.map(r => {
-			if (r.rarityName === inputRarity) 
-				return {rarityName: inputRarity, odds: newOdds}
-			else 
+			if (r.rarityName === inputRarity)
+				return { rarityName: inputRarity, odds: newOdds }
+			else
 				return r
 		})
 
@@ -87,7 +87,7 @@ export default function Sets({ cardsfromSet }) {
 
 	const handleGeneratePack = () => {
 		setTotalOpened(totalOpened + 1)
-		
+
 		let newPack = [
 			...pickNonRareCards('common', cardsfromSet),
 			...pickNonRareCards('uncommon', cardsfromSet),
@@ -100,32 +100,32 @@ export default function Sets({ cardsfromSet }) {
 		<>
 			<Head>
 				<title>{setname}</title>
-				<meta name="description" content="Pokemon booster pack simulator" key='ogMeta'/>
-				<link rel="icon" href="/Ho-oh.png" key='ogIcon'/>
+				<meta name="description" content="Pokemon booster pack simulator" key='ogMeta' />
+				<link rel="icon" href="/Ho-oh.png" key='ogIcon' />
 			</Head>
 			<header className={styles.header}>
-				<RarityInputForm 
-					rareTypes={ rareTypes } 
-					handleChange={ handleProbabilityChange }
-					totalOpened={ totalOpened }
-					handleGeneratePack={ handleGeneratePack }
-					totalOdds={ totalOdds }
+				<RarityInputForm
+					rareTypes={rareTypes}
+					handleChange={handleProbabilityChange}
+					totalOpened={totalOpened}
+					handleGeneratePack={handleGeneratePack}
+					totalOdds={totalOdds}
 				/>
 				<details className={styles.details} open>
 					<summary className={styles.summary}>How to use</summary>
-					Some featured sets will have suggested probabilities for rares. There is 1 guaranteed 
-					rare per pack. Users can customize the 'rare' probability distribution using the panel 
+					Some featured sets will have suggested probabilities for rares. There is 1 guaranteed
+					rare per pack. Users can customize the &quot;rare&quot; probability distribution using the panel
 					on the left. Input accepts up to 2 decimal places. Enjoy!
 				</details>
 			</header>
 			<button
-				className={ styles.genPackBtn }
-				onClick={ handleGeneratePack } 
-				disabled={ buttonDisabled }
+				className={styles.genPackBtn}
+				onClick={handleGeneratePack}
+				disabled={buttonDisabled}
 			>
 				open new pack
 			</button>
-			{ pack?.length > 0 &&
+			{pack?.length > 0 &&
 				<CardTray pack={pack} totalRolls={totalOpened} />
 			}
 		</>
@@ -142,29 +142,29 @@ export async function getStaticPaths() {
 	})
 
 	return {
-	  paths: setIds,
-	  fallback: false
+		paths: setIds,
+		fallback: false
 	};
 }
 
 export async function getStaticProps({ params }) {
 	const cardsfromSet = await getCardsfromSet(params.setid)
-    .then(res => res)
-    .catch(err => {
-      console.log('err', err)
-      return null
-    })
-  
-  if (!cardsfromSet) {
-    return {
-      redirect: {
-        destination: '/pageerror?error=boosterpackpage',
-        permanent: false,
-      }
-    }
-  }
+		.then(res => res)
+		.catch(err => {
+			console.log('err', err)
+			return null
+		})
 
-  return {
+	if (!cardsfromSet) {
+		return {
+			redirect: {
+				destination: '/pageerror?error=boosterpackpage',
+				permanent: false,
+			}
+		}
+	}
+
+	return {
 		props: { cardsfromSet }
 	}
 }

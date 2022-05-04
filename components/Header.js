@@ -6,7 +6,7 @@ const Header = () => {
       <h1 className={styles.emphasis}>Pokemon </h1>
       <h1 className={styles.title}>Booster Pack Simulator</h1>
       <p className={styles.content}>
-        A simulator to get a feel for "<span className={styles.color}>pull rates</span>" of a set. Choose from featured sets or use the search bar to find a set.
+        A simulator to get a feel for &quot;<span className={styles.color}>pull rates</span>&quot; of a set. Choose from featured sets or use the search bar to find a set.
       </p>
     </header>
   )
