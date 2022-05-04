@@ -10,7 +10,7 @@ const Card = ({ card, index }) => {
       <img
         key={card.id}
         src={card.images.large}
-        alt={card.id}
+        alt={card.name}
         className={styles.img}
         style={{ animationDelay: delay }}
         width='380px'

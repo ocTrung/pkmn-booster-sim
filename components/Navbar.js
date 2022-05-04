@@ -16,15 +16,15 @@ const Navbar = () => {
   const handleChange = (e) => setQuery(e.target.value)
 
   return (
-    <div  className={styles.container}>
+    <div className={styles.container}>
       <Link href='/'>
         <a>
           <picture className={styles.icon}>
             <source srcSet="/venusaur.png" media="(min-width: 75em)"></source>
             <source srcSet="/ivysaur.png" media="(min-width: 40em)"></source>
-            <img 
-              src="/bulbasaur.png" 
-              alt="A description of the image." 
+            <img
+              src="/bulbasaur.png"
+              alt="A small pokemon icon."
               className={styles.img}
             >
             </img>
@@ -33,12 +33,12 @@ const Navbar = () => {
       </Link>
 
       <form onSubmit={handleSubmitSearch}>
-        <input 
-          id='search' 
-          className={styles.search} 
-          type='text' 
-          placeholder=' Search Sets' 
-          value={query} 
+        <input
+          id='search'
+          className={styles.search}
+          type='text'
+          placeholder=' Search Sets'
+          value={query}
           onChange={handleChange}></input>
       </form>
     </div>
