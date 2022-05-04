@@ -1,4 +1,4 @@
-import SetCard from './setCard'
+import SetCard from './SetCard'
 import styles from '../styles/SetTray.module.scss'
 
 const SetTray = ({ sets }) => {
