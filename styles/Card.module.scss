@@ -1,17 +1,16 @@
 .rounded {
-  border-radius: 7%;
+  border-radius: 1em;
 }
 
-.img {
-  max-inline-size: 100%;
-  block-size: auto;
-  display: block;
-  object-fit: cover;
+.nextImg {
+  composes: rounded;
+}
+
+.cardWrapper {
   composes: rounded;
   padding: 4px;
-  background-color: #fcd634;
+  background-color: #f5c90a;
   opacity: 0%;
-
   animation-name: flip;
   animation-duration: 1s;
   animation-timing-function: ease-in;

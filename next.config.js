@@ -9,5 +9,8 @@ module.exports = {
   nextConfig,
   sassOptions: {
     includePaths: [path.join(__dirname, 'styles')],
-  }
+  },
+  images: {
+    domains: ['images.pokemontcg.io'],
+  },
 }
