@@ -10,7 +10,7 @@ import { getRarityList, pickNonRareCards, pickRareCard, round100 } from '../../u
 import { getCardsfromSet } from '../../utils/pokemonAPI'
 
 
-export default function Sets({ cardsfromSet }) {
+export default function Sets({ cardsfromSet = null }) {
 	const [rareTypes, setRareTypes] = useState(null)
 	const [pack, setPack] = useState(null)
 	const [totalOpened, setTotalOpened] = useState(0)
@@ -24,11 +24,11 @@ export default function Sets({ cardsfromSet }) {
 	useEffect(() => {
 		let newRareTypes = null
 
-		if (cardsfromSet.length > 0) {
+		if (cardsfromSet?.length > 0) {
 			newRareTypes = getRarityList(cardsfromSet)
 		}
 		if (setid === window.localStorage.setid) {
-			newRareTypes.forEach(t => {
+			newRareTypes?.forEach(t => {
 				const rarityName = t.rarityName
 				const rareTypefromStorage = JSON.parse(window.localStorage.getItem(rarityName))
 				t.odds = rareTypefromStorage.odds
@@ -42,7 +42,7 @@ export default function Sets({ cardsfromSet }) {
 			// For browsers that do not yet support Object.hasOwn()
 			if (typeof Object.hasOwn !== 'function') {
 				if (probabilityData.hasOwnProperty(setid)) {
-					newRareTypes.forEach(t => {
+					newRareTypes?.forEach(t => {
 						const rarityName = t.rarityName
 						const odds = probabilityData[setid][rarityName]
 						t.odds = odds
@@ -50,7 +50,7 @@ export default function Sets({ cardsfromSet }) {
 				}
 			} else {
 				if (Object.hasOwn(probabilityData, setid)) {
-					newRareTypes.forEach(t => {
+					newRareTypes?.forEach(t => {
 						const rarityName = t.rarityName
 						const odds = probabilityData[setid][rarityName]
 						t.odds = odds
@@ -64,7 +64,7 @@ export default function Sets({ cardsfromSet }) {
 	// Save rarity probabilities to local storage
 	useEffect(() => {
 		if (rareTypes) {
-			rareTypes.forEach(type => {
+			rareTypes?.forEach(type => {
 				window.localStorage.setItem(type.rarityName, JSON.stringify(type))
 			})
 		}
@@ -90,7 +90,7 @@ export default function Sets({ cardsfromSet }) {
 
 		let newPack = []
 
-		if (rareTypes.find(type => type.rarityName === 'Promo') && rareTypes.length === 1) {
+		if (rareTypes.find(type => type.rarityName === 'Promo') && rareTypes?.length === 1) {
 			newPack = [
 				pickRareCard(cardsfromSet, rareTypes)
 			]
@@ -103,6 +103,12 @@ export default function Sets({ cardsfromSet }) {
 		}
 
 		setPack(newPack)
+	}
+
+	if (router.isFallback) {
+		return (
+			<h1>Building new page...</h1>
+		)
 	}
 
 	return (
@@ -158,13 +164,16 @@ export async function getStaticPaths() {
 
 export async function getStaticProps({ params }) {
 	const cardsfromSet = await getCardsfromSet(params.setid)
-		.then(res => res)
+		.then(res => {
+			return res
+		})
 		.catch(err => {
 			console.log('err', err)
 			return null
 		})
 
 	return {
-		props: { cardsfromSet }
+		props: { cardsfromSet },
+		revalidate: 10
 	}
 }

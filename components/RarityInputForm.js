@@ -11,8 +11,6 @@ const RarityInputForm = ({ rareTypes, handleChange, totalOpened, totalOdds }) =>
   const pointsLeft = parseFloat((100 - totalOdds).toFixed(2))
   const pointsStyle = pointsLeft === 0 ? styles.success : styles.failure
 
-  console.log('rareTypes', rareTypes)
-
   return (
     <div className={styles.formContainer}>
       <button
