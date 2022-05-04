@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
-const pageError = () => {
+const PageError = () => {
   const router = useRouter()
   const error = router.query.error
   let message = null
@@ -20,7 +20,6 @@ const pageError = () => {
       message = 'Page not found!'
   }
 
-  console.log(error)
   return (
     <>
       <div>{message}</div>
@@ -31,4 +30,4 @@ const pageError = () => {
   )
 }
 
-export default pageError
+export default PageError
