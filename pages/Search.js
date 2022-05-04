@@ -20,13 +20,13 @@ const Search = () => {
     <>
       <Head>
         <title>Search Sets</title>
-				<meta name="description" content="Pokemon booster pack simulator" key='ogMeta'/>
-				<link rel="icon" href="/Ho-oh.png" key='ogIcon'/>
+        <meta name="description" content="Pokemon booster pack simulator" key='ogMeta' />
+        <link rel="icon" href="/Ho-oh.ico" key='ogIcon' />
       </Head>
-      { 
-        searchResults?.length !== 0 
-        ? <SetTray sets={searchResults}/>
-        : 'No results' 
+      {
+        searchResults?.length !== 0
+          ? <SetTray sets={searchResults} />
+          : 'No results'
       }
     </>
   )
@@ -36,10 +36,10 @@ export async function getSearchResults(searchQuery) {
   const sets = await searchSets(searchQuery)
     .then(res => res)
     .catch(err => {
-      console.log('err',err)
+      console.log('err', err)
       return null
     })
-  
+
   if (!sets) {
     return {
       redirect: {
@@ -48,8 +48,8 @@ export async function getSearchResults(searchQuery) {
       }
     }
   }
-  
-	return sets
+
+  return sets
 }
 
 export default Search

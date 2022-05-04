@@ -1,5 +1,5 @@
 .rounded {
-  border-radius: 1em;
+  border-radius: .5em;
 }
 
 .nextImg {
@@ -8,8 +8,9 @@
 
 .cardWrapper {
   composes: rounded;
+  width: fit-content;
   padding: 4px;
-  background-color: #f5c90a;
+  // background-color: #f5c90a;
   opacity: 0%;
   animation-name: flip;
   animation-duration: 1s;
@@ -46,5 +47,6 @@
 @keyframes flipBackImg {
   100% {
     transform: rotateY(0deg);
+    background-image: none;
   }
 }

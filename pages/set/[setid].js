@@ -88,11 +88,20 @@ export default function Sets({ cardsfromSet }) {
 	const handleGeneratePack = () => {
 		setTotalOpened(totalOpened + 1)
 
-		let newPack = [
-			...pickNonRareCards('common', cardsfromSet),
-			...pickNonRareCards('uncommon', cardsfromSet),
-			pickRareCard(cardsfromSet, rareTypes)
-		]
+		let newPack = []
+
+		if (rareTypes.find(type => type.rarityName === 'Promo') && rareTypes.length === 1) {
+			newPack = [
+				pickRareCard(cardsfromSet, rareTypes)
+			]
+		} else {
+			newPack = [
+				...pickNonRareCards('common', cardsfromSet),
+				...pickNonRareCards('uncommon', cardsfromSet),
+				pickRareCard(cardsfromSet, rareTypes)
+			]
+		}
+
 		setPack(newPack)
 	}
 
@@ -101,7 +110,7 @@ export default function Sets({ cardsfromSet }) {
 			<Head>
 				<title>{setname}</title>
 				<meta name="description" content="Pokemon booster pack simulator" key='ogMeta' />
-				<link rel="icon" href="/Ho-oh.png" key='ogIcon' />
+				<link rel="icon" href="/Ho-oh.ico" key='ogIcon' />
 			</Head>
 			<header className={styles.header}>
 				<RarityInputForm
@@ -143,7 +152,7 @@ export async function getStaticPaths() {
 
 	return {
 		paths: setIds,
-		fallback: false
+		fallback: true
 	};
 }
 
@@ -154,15 +163,6 @@ export async function getStaticProps({ params }) {
 			console.log('err', err)
 			return null
 		})
-
-	if (!cardsfromSet) {
-		return {
-			redirect: {
-				destination: '/pageerror?error=boosterpackpage',
-				permanent: false,
-			}
-		}
-	}
 
 	return {
 		props: { cardsfromSet }
