@@ -22,11 +22,11 @@ function pickNonRareCards(rarityName, cards) {
 	switch (rarityName) {
 		case 'common':
 			total = 6
-			cardPool = cards.filter(c => c.rarity.toLowerCase() === 'common')
+			cardPool = cards.filter(c => c.rarity?.toLowerCase() === 'common')
 			break
 		case 'uncommon':
 			total = 3
-			cardPool = cards.filter(c => c.rarity.toLowerCase() === 'uncommon')
+			cardPool = cards.filter(c => c.rarity?.toLowerCase() === 'uncommon')
 			break
 	}
 
