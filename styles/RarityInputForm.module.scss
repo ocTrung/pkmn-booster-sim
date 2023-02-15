@@ -1,7 +1,6 @@
 @import "./variables.module";
 
 .formContainer {
-  // margin-block: 1em;
   width: fit-content;
   background-color: $gray-400;
   padding: 1em;
@@ -26,7 +25,7 @@
 
 .inputSection {
   display: grid;
-  grid-template-columns: minmax(18ch, 1fr) 10ch;
+  grid-template-columns: minmax(18ch, 1fr) 7ch auto;
 }
 
 .input {
@@ -55,12 +54,12 @@
 }
 
 .feedback {
-  margin-top: 0.5em;
-  margin-bottom: 1em;
+  margin-top: 1rem;
 }
 
 .feedbackText {
-  margin-block: .25em;
+  margin-top: 0rem;
+  margin-bottom: 1rem;
 }
 
 .success {
@@ -79,4 +78,18 @@
   border-radius: 2% / 15%;
   padding-inline: 1em;
   margin-bottom: 1em;
+}
+
+.probabilityLabel {
+  margin: 0;
+  margin-left: .25rem;
+}
+
+.error {
+  color: $error-color;
+  font-weight: 500;
+}
+
+.pointsStyle {
+  font-weight: 600;
 }

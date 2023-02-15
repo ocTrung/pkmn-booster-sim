@@ -9,7 +9,7 @@ const RarityInputForm = ({ rareTypes, handleChange, totalOpened, totalOdds }) =>
     error = { message: 'Total must not exceed 100' }
 
   const pointsLeft = parseFloat((100 - totalOdds).toFixed(2))
-  const pointsStyle = pointsLeft === 0 ? styles.success : styles.failure
+  const pointsStatus = pointsLeft === 0 ? styles.success : styles.failure
 
   return (
     <div className={styles.formContainer}>
@@ -36,20 +36,22 @@ const RarityInputForm = ({ rareTypes, handleChange, totalOpened, totalOdds }) =>
                   onChange={handleChange}
                   value={rareTypes.find(el => el.rarityName === r.rarityName).odds}>
                 </input>
+                <span className={styles.probabilityLabel}>%</span>
+
               </div>
             )
           })}
         </form>}
       <section className={styles.feedback}>
-        <p className={styles.feedback}>
-          points left: <span className={pointsStyle}> {isNaN(pointsLeft) ? 'All inputs must be a number' : pointsLeft} </span>
+        <p className={styles.feedbackText}>
+          % points left: <span className={`${pointsStatus} ${styles.pointsStyle}`}> {isNaN(pointsLeft) ? 'All inputs must be a number' : pointsLeft} </span>
         </p>
-        <p className={styles.feedbackText}>packs opened: {totalOpened}</p>
+        <p className={styles.feedbackText}>packs opened: <span className={styles.pointsStyle}>{totalOpened}</span></p>
       </section>
       {error !== null &&
-        <div className={styles.error}>
+        <strong className={styles.error}>
           {error.message}
-        </div>
+        </strong>
       }
     </div>
   )

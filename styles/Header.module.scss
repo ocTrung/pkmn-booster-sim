@@ -13,13 +13,13 @@
 }
 
 .color {
-  color: $yellow;
+  color: $yellow-600;
   font-style: italic;
 }
 
 .emphasis {
   composes: title;
-  color: $yellow;
+  color: $yellow-600;
 }
 
 

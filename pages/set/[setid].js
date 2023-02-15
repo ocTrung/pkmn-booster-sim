@@ -134,8 +134,8 @@ export default function Sets({ cardsFromSet }) {
 				/>
 				<details className={styles.details} open>
 					<summary className={styles.summary}>How to use</summary>
-					Some featured sets will have suggested probabilities for rares. There is 1 guaranteed
-					rare per pack. Users can customize the probability distribution for rarities using the input panel.
+					There is 1 guaranteed rare per pack. Users can customize the probability
+					distribution for rarities using the input panel.
 					Input accepts up to 2 decimal places (ex: 1.25). Enjoy!
 				</details>
 			</header>
